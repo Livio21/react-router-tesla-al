@@ -23,15 +23,14 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="flex flex-col items-center py-16 px-4 min-h-[calc(100vh-64px)] bg-white dark:bg-zinc-900">
+    <main className="flex flex-col items-center py-16 px-4 min-h-[calc(100vh-64px)] bg-white dark:bg-zinc-900 dark:text-zinc-200">
       <div className="max-w-6xl w-full mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-12">{t("contact.title", "Contact Us")}</h1>
+        <h1 className="text-4xl font-bold text-center mb-12 ">{t("contact.title", "Contact Us")}</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Info */}
           <div className="space-y-8">
             <div className="rounded-2xl border border-black/10 dark:border-white/20 bg-white/50 dark:bg-black/40 backdrop-blur-sm p-6 space-y-6 transition-all duration-300">
-              <h2 className="text-2xl font-semibold">{t("contact.reachUs", "Reach Us")}</h2>
+              {/* <h2 className="text-2xl font-semibold">{t("contact.reachUs", "Reach Us")}</h2> */}
               
               <div className="space-y-4">
                 <a

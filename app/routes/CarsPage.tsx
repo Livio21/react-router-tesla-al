@@ -326,7 +326,7 @@ export default function CarsPage() {
                 </span>
               </div>
               <form
-                className="flex flex-col gap-4"
+                className="flex flex-col gap-4 dark:text-gray-100"
                 onSubmit={(e) => e.preventDefault()}
               >
                 <div className="flex flex-col gap-4">
@@ -340,14 +340,14 @@ export default function CarsPage() {
                         newFilter === "true" ? "" : "true"
                       )
                     }
-                    className="relative h-[40px] bg-zinc-200 transition-colors focus:outline-none rounded"
+                    className="relative h-[40px] bg-zinc-200 dark:bg-zinc-800 transition-colors focus:outline-none rounded"
                   >
                     <div className="absolute top-1/2 -translate-y-1/2 flex w-full z-50 items-center justify-around px-2 py-1 font-medium">
                       <span className="basis-1/2">{t("newCar")}</span>
                       <span className="basis-1/2">{t("usedCar")}</span>
                     </div>
                     <span
-                      className={`absolute top-0 left-0 z-10 p-4 w-1/2 m-1 transform bg-white shadow rounded transition-transform ${
+                      className={`absolute top-0 left-0 z-10 p-4 w-1/2 m-1 transform bg-white dark:bg-zinc-700 shadow rounded transition-transform ${
                         newFilter === "true" ? "" : "translate-x-full -ml-1"
                       }`}
                     />
@@ -888,7 +888,7 @@ export default function CarsPage() {
                   }
                   onClick={() => navigate(detailsUrl)}
                   tabIndex={0}
-                  role="button" 
+                  role="button"
                   aria-label={t("viewDetailsFor", { car: car.name })}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ")
@@ -922,10 +922,10 @@ export default function CarsPage() {
                     </div>
                   )}
                   <div className="w-full p-5">
-                    <div className="flex flex-col gap-1">
-                      <div className="text-lg font-semibold text-black dark:text-zinc-100 group-hover:underline p-1">
+                    <div className="flex flex-col gap-1 text-black dark:text-zinc-100">
+                      <div className="text-lg font-semibold  group-hover:underline p-1">
                         <span>{car.brand + " " + car.model}</span>
-                        <span className="text-sm text-zinc-700 ml-4 border border-black/20 rounded p-1">
+                        <span className="text-sm  ml-4 border border-black/20 dark:border-white/30 rounded p-1">
                           {car.year}
                         </span>
                       </div>
@@ -953,7 +953,7 @@ export default function CarsPage() {
                           : car.fuelType}
                       </span>
                       <div className="relative group hover:bg-zinc-200 w-fit p-1 rounded-md">
-                          <CarPaint color={car.color ?? ""} />
+                        <CarPaint color={car.color ?? ""} />
                         {car.features && car.features.length > 0 && (
                           <div className="absolute left-0 top-full mt-4 z-20 min-w-[180px] bg-white dark:bg-zinc-800 rounded-lg shadow-xl p-3 text-xs text-black dark:text-gray-100 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity">
                             <ul className="flex gap-1 flex-wrap">

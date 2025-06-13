@@ -28,30 +28,7 @@ export default function Header() {
   >(null);
   const { i18n, t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    const prefersDark =
-      storedTheme === "dark" ||
-      (!storedTheme &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches);
-
-    setDarkMode(prefersDark);
-    if (prefersDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    if (newMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  };
+  
 
   const handleMouseEnter = (
     section: "tesla" | "cars" | "about" | "services"
@@ -418,7 +395,7 @@ export default function Header() {
         <div className="flex items-center gap-4">
           <Link
             to="/"
-            className="text-xl font-bold tracking-tight text-gray-900 dark:text-zinc-100 hover:opacity-80 transition bg-zinc-100 lg:bg-white p-2 rounded-lg"
+            className="text-xl font-bold tracking-tight text-gray-900 dark:text-zinc-100 hover:opacity-80 transition bg-zinc-100 dark:bg-zinc-800 lg:bg-white p-2 rounded-lg"
           >
             Permakinat.al
           </Link>
@@ -596,7 +573,6 @@ export default function Header() {
                 darkMode ? "Switch to light mode" : "Switch to dark mode"
               )}
               className="p-2 rounded hover:bg-gray-100 dark:hover:bg-zinc-800 transition"
-              onClick={toggleDarkMode}
               title={
                 darkMode
                   ? t("lightMode", "Switch to light mode")
@@ -837,7 +813,6 @@ export default function Header() {
                   darkMode ? "Switch to light mode" : "Switch to dark mode"
                 )}
                 className="self-end w-fit p-4 rounded bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 transition "
-                onClick={toggleDarkMode}
                 title={
                   darkMode
                     ? t("lightMode", "Switch to light mode")
