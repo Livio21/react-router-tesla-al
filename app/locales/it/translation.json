@@ -116,6 +116,7 @@
   "newCar": "Nuova",
   "usedCar": "Usata",
   "usedCarWith": "Auto usata con",
+  "newVehicle": "Nuovo",
   "withRange": "con autonomia",
   "inventory": "Auto",
   "viewDetailsFor": "Vedi dettagli per {{car}}",

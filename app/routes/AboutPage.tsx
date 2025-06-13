@@ -4,8 +4,7 @@ export default function AboutPage() {
         <div>
             <h1>About Page</h1>
             <p>
-                {/* Add information about your application or company here */}
-                [Insert about page content here]
+                bosh
             </p>
         </div>
     );
