@@ -291,7 +291,7 @@ export default function CarsPage() {
   };
 
   return (
-    <div className=" mx-auto px-4 py-8 ">
+    <div className=" mx-auto px-4 py-8 dark:text-zinc-200 ">
       <h1 className="text-3xl font-bold p-4">{t("inventory", "Makinat")}</h1>
       <div className="flex flex-col lg:flex-row gap-8">
         <aside className="w-full lg:w-72 px-4">
@@ -825,7 +825,9 @@ export default function CarsPage() {
             )}
           </div>
         </aside>
-        <main className="flex-1">          <div className="flex justify-between items-center mb-4">            <div className="hidden lg:block text-xs text-black dark:text-zinc-400">
+        <main className="flex-1">          
+          <div className="flex justify-between items-center mb-4">            
+            <div className="hidden lg:block text-xs text-black dark:text-zinc-400">
               {getAppliedFilters().length > 0 ? (
                 <span className="block">
                   {t("activeFilters")}{" "}
@@ -883,7 +885,7 @@ export default function CarsPage() {
               return (
                 <div
                   className={
-                    "relative aspect-square bg-white dark:bg-zinc-800 flex flex-col items-center transition  border border-black/20 cursor-pointer rounded-lg  " +
+                    "relative aspect-[500/450] bg-white dark:bg-inherit flex flex-col items-center transition  border border-black/20 dark:border-white/20 cursor-pointer rounded-lg  " +
                     (car.availability ? "" : "opacity-60 pointer-events-none")
                   }
                   onClick={() => navigate(detailsUrl)}

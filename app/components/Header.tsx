@@ -388,14 +388,14 @@ export default function Header() {
 
   return (
     <section
-      className="sticky top-0 z-50 bg-white/50 dark:bg-black/40 backdrop-blur-sm border-b border-black/10 dark:border-white/20 dark:text-zinc-200 transition-all duration-300 ease-in-out"
+      className="sticky top-0 z-50 bg-white/50 dark:bg-black/40 backdrop-blur-lg border-b border-black/10 dark:border-white/20 dark:text-zinc-200 transition-all duration-300 ease-in-out"
       onMouseLeave={handleMouseLeave}
     >
       <header className="flex items-center justify-between px-8 py-3 font-[550] relative">
         <div className="flex items-center gap-4">
           <Link
             to="/"
-            className="text-xl font-bold tracking-tight text-gray-900 dark:text-zinc-100 hover:opacity-80 transition bg-zinc-100 dark:bg-zinc-800 lg:bg-white p-2 rounded-lg"
+            className="text-xl font-bold tracking-tight text-gray-900 dark:text-zinc-100 hover:opacity-80 transition bg-zinc-100 dark:bg-zinc-800 dark:lg:bg-inherit lg:bg-inherit p-2 rounded-lg"
           >
             Permakinat.al
           </Link>
