@@ -124,7 +124,7 @@ export default function HomePage() {
       </section>
       <section className="flex gap-4 lg:gap-8 p-4 lg:p-10 overflow-auto snap-x scrollbar-hide ">
         {cars.map((car) => (
-          <div className="relative snap-center aspect-{330/520} min-w-[330px] h-[520px] lg:aspect-[1024/580]  lg:w-[1024px] lg:h-[580px] rounded-lg ">
+          <div className="relative snap-center aspect-{330/520} min-w-[330px] h-[520px] lg:aspect-[1024/580]  lg:min-w-[1024px] lg:h-[580px] rounded-lg ">
             <img
               src={car.img}
               alt=""
