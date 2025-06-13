@@ -1,15 +1,20 @@
-import type { Config } from 'tailwindcss';
+import { type Config } from 'tailwindcss';
 
-const config: Config = {
+export default {
     darkMode: 'class',
-    content: [
-        './src/**/*.{js,ts,jsx,tsx}',
-        './public/index.html',
-    ],
+    content: {
+        relative: true,
+        files: [
+            './app/**/*.{js,ts,jsx,tsx}',
+            './public/**/*.{html,js}',
+        ],
+    },
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                sans: ['Manrope', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            },
+        },
     },
     plugins: [],
-};
-
-export default config;
+} satisfies Config;

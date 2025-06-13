@@ -3,15 +3,12 @@ import { useParams, Link } from "react-router";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "~/sanity/client";
-// import ImageGallery from "react-image-gallery";
-import "react-image-gallery/styles/css/image-gallery.css";
 import { useTranslation } from "react-i18next";
 import ImageCarousel from "~/components/ImageCarousel";
 
 interface Car {
   _id: string;
   name: string;
-  // Remove price, thumbnail
   currentPrice: string;
   previousPrice?: string;
   range: string;
@@ -33,7 +30,6 @@ const builder = imageUrlBuilder(client);
 const urlFor = (source: SanityImageSource) =>
   builder.image(source).width(800).auto("format").url();
 
-// Fetch conversion rates dynamically from an API (e.g., exchangerate.host)
 const useCurrencyRates = () => {
   const [rates, setRates] = useState<{ USD: number; ALL: number; GBP: number }>(
     {

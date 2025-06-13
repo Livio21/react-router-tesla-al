@@ -888,7 +888,7 @@ export default function CarsPage() {
                   }
                   onClick={() => navigate(detailsUrl)}
                   tabIndex={0}
-                  role="button"
+                  role="button" 
                   aria-label={t("viewDetailsFor", { car: car.name })}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ")

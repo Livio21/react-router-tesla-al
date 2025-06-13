@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 export default function Footer() {
   const { t } = useTranslation();
   return (
-    <footer className="p-4 font-medium text-[12px]  bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border-t border-gray-200 dark:border-zinc-700">      <div className="container mx-auto ">
+    <footer className="w-full p-4 font-medium text-[12px] bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border-t border-gray-200 dark:border-zinc-700">
+      <div className="container mx-auto">
         <p className="mb-4 text-zinc-600">
           {t("footer.disclaimer")}
         </p>

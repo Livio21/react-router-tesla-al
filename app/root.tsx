@@ -43,17 +43,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Meta />
           <Links />
         </head>
-        <body>
+        <body className="min-h-screen">
           <HeaderHoverContext.Provider
             value={{ headerHovered, setHeaderHovered }}
           >
             <I18nextProvider i18n={i18n}>
-              <main className="bg-white dark:bg-zinc-900 ">
+              <main className="flex flex-col min-h-screen bg-white dark:bg-zinc-900">
                 <Header />
                 <div
-                  className={`transition-all duration-200 min-h-full${
+                  className={`flex-grow transition-all duration-200${
                     headerHovered
-                      ? "filter blur-xs pointer-events-none select-none "
+                      ? " filter blur-xs pointer-events-none select-none"
                       : ""
                   }`}
                 >

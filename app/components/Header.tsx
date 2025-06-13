@@ -28,7 +28,6 @@ export default function Header() {
   >(null);
   const { i18n, t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     const prefersDark =
@@ -36,16 +35,13 @@ export default function Header() {
       (!storedTheme &&
         window.matchMedia("(prefers-color-scheme: dark)").matches);
 
+    setDarkMode(prefersDark);
     if (prefersDark) {
       document.documentElement.classList.add("dark");
-      setDarkMode(true);
     } else {
       document.documentElement.classList.remove("dark");
-      setDarkMode(false);
     }
-  }, []);
-
-  const toggleDarkMode = () => {
+  }, []);  const toggleDarkMode = () => {
     const newMode = !darkMode;
     setDarkMode(newMode);
     if (newMode) {
