@@ -418,7 +418,7 @@ export default function Header() {
         <div className="flex items-center gap-4">
           <Link
             to="/"
-            className="text-xl font-bold tracking-tight text-gray-900 dark:text-zinc-100 hover:opacity-80 transition"
+            className="text-xl font-bold tracking-tight text-gray-900 dark:text-zinc-100 hover:opacity-80 transition bg-zinc-100 lg:bg-white p-2 rounded-lg"
           >
             Permakinat.al
           </Link>
@@ -434,7 +434,6 @@ export default function Header() {
           <span className="block w-6 h-0.5 bg-gray-800 dark:bg-gray-200 rounded"></span>
         </button>
 
-        {/* Navigation (desktop) */}
         <ul className="hidden md:flex space-x-4 text-[14px] items-center ">
           <li onMouseEnter={() => handleMouseEnter("tesla")}>
             <Link
@@ -668,7 +667,7 @@ export default function Header() {
             aria-label="Mobile menu"
           >
             <button
-              className=" float-right p-6 rounded bg-gray-100 dark:bg-zinc-800 relative "
+              className=" float-right p-6 rounded bg-gray-100 dark:bg-zinc-800 relative mb-4"
               aria-label="Close menu"
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -678,11 +677,129 @@ export default function Header() {
             <ul className="flex flex-col gap-4 float-right clear-right text-[18px] font-semibold">
               <li>
                 <Link
+                  aria-label="Tesla Logo"
                   to="/cars?brand=tesla"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="py-3 px-2 rounded hover:bg-gray-100 dark:hover:bg-zinc-800 block"
+                  className="relative group px-4 py-[2px] rounded w-[150px] flex items-center justify-center overflow-hidden shine-metal-btn transition-all duration-200 hover:invert"
+                  style={{
+                    background:
+                      "linear-gradient(120deg, #e5e7eb 0%, #bfc1c6 30%, #f3f4f6 60%, #a3a3a3 100%)",
+                  }}
                 >
-                  Tesla
+                  <span className="absolute inset-0 pointer-events-none z-10">
+                    <span className="shine-metal-anim" />
+                  </span>
+                  <svg
+                    viewBox="0 0 342 35"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="relative z-20 h-7 w-auto"
+                    style={{
+                      filter:
+                        "drop-shadow(0 1px 2px #bfc1c6) drop-shadow(0 2px 8px #a3a3a3)",
+                    }}
+                  >
+                    <defs>
+                      <linearGradient
+                        id="metal-gradient"
+                        x1="0%"
+                        y1="0%"
+                        x2="100%"
+                        y2="100%"
+                      >
+                        <stop offset="0%" stopColor="#f3f4f6" />
+                        <stop offset="20%" stopColor="#e5e7eb" />
+                        <stop offset="40%" stopColor="#bfc1c6" />
+                        <stop offset="60%" stopColor="#f3f4f6" />
+                        <stop offset="100%" stopColor="#a3a3a3" />
+                      </linearGradient>
+                      <filter
+                        id="metal-glow"
+                        x="-20%"
+                        y="-20%"
+                        width="140%"
+                        height="140%"
+                      >
+                        <feGaussianBlur stdDeviation="1.5" result="blur" />
+                        <feMerge>
+                          <feMergeNode in="blur" />
+                          <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                      </filter>
+                    </defs>
+                    <path
+                      fill="black"
+                      d="M0 .1a9.7 9.7 0 0 0 7 7h11l.5.1v27.6h6.8V7.3L26 7h11a9.8 9.8 0 0 0 7-7H0zm238.6 0h-6.8v34.8H263a9.7 9.7 0 0 0 6-6.8h-30.3V0zm-52.3 6.8c3.6-1 6.6-3.8 7.4-6.9l-38.1.1v20.6h31.1v7.2h-24.4a13.6 13.6 0 0 0-8.7 7h39.9v-21h-31.2v-7zm116.2 28h6.7v-14h24.6v14h6.7v-21h-38zM85.3 7h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7m0 13.8h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7m0 14.1h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7M308.5 7h26a9.6 9.6 0 0 0 7-7h-40a9.6 9.6 0 0 0 7 7"
+                    ></path>
+                  </svg>
+                  <span
+                    className="absolute left-0 right-0 bottom-1 text-center z-30 font-bold text-[15px] tracking-wide uppercase shine-metal-text select-none pointer-events-none"
+                    style={{
+                      color: "#e5e7eb",
+                      textShadow:
+                        "0 1px 2px #bfc1c6, 0 2px 8px #a3a3a3, 0 0px 1px #fff",
+                      letterSpacing: "0.08em",
+                      fontWeight: 700,
+                      textTransform: "uppercase",
+                      userSelect: "none",
+                    }}
+                  ></span>
+                  <style>
+                    {`
+                  .shine-metal-btn {
+                    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);
+                    position: relative;
+                    transition: box-shadow 0.2s, background 0.2s, transform 0.2s;
+                  }
+                  .shine-metal-anim {
+                    display: block;
+                    position: absolute;
+                    top: 0;
+                    left: -60%;
+                    width: 60%;
+                    height: 100%;
+                    background: linear-gradient(
+                      120deg,
+                      rgba(255,255,255,0) 0%,
+                      rgba(255,255,255,0.7) 50%,
+                      rgba(255,255,255,0) 100%
+                    );
+                    transform: skewX(-20deg);
+                    animation: shine-metal-loop 2.5s linear infinite;
+                    opacity: 0.7;
+                  }
+                  @keyframes shine-metal-loop {
+                    0% {
+                      left: -60%;
+                      opacity: 0.7;
+                    }
+                    10% {
+                      opacity: 1;
+                    }
+                    40% {
+                      left: 100%;
+                      opacity: 1;
+                    }
+                    60% {
+                      left: 100%;
+                      opacity: 0.7;
+                    }
+                    100% {
+                      left: -60%;
+                      opacity: 0.7;
+                    }
+                  }
+                  .shine-metal-text {
+                    color: #e5e7eb;
+                    text-shadow: 0 1px 2px #bfc1c6, 0 2px 8px #a3a3a3, 0 0px 1px #fff;
+                  }
+                  .shine-metal-btn:hover,
+                  .shine-metal-btn:focus-visible {
+                    box-shadow: 0 4px 16px 0 rgba(0,0,0,0.16);
+                    background: linear-gradient(120deg, #f3f4f6 0%, #e5e7eb 30%, #bfc1c6 60%, #a3a3a3 100%);
+                    transform: translateY(-2px) scale(1.03);
+                  }
+                `}
+                  </style>
                 </Link>
               </li>
               <li>
