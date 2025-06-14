@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "~/sanity/client";
+import { div } from "framer-motion/client";
 
 interface Car {
   _id: string;
@@ -862,7 +863,7 @@ export default function CarsPage() {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {filteredCars.map((car, idx) => {
+            {filteredCars.length > 0 ?  filteredCars.map((car, idx) => {
               const thumb =
                 car.gallery && car.gallery.length > 0
                   ? urlFor(car.gallery[0])
@@ -977,7 +978,9 @@ export default function CarsPage() {
                   </div>
                 </div>
               );
-            })}
+            }): (<div className="text-center text-lg font-bold">
+              {t("noCarsAvailable")} ☹️
+            </div>)}
           </div>
         </main>
       </div>

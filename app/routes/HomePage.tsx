@@ -141,7 +141,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex lg:w-1/2 gap-2 text-center font-medium">
                   <Link
-                    to={`/cars?brand=tesla&model=${car.name.toLowerCase()}`}
+                    to={`/cars?brand=Tesla&model=${car.name.toLowerCase().replace(" ","-")}`}
                     className="basis-1/2 p-2 lg:p-4 rounded-lg bg-white text-black font-bold border-2 border-black/20 hover:bg-white/10 backdrop-blur-2xl hover:invert transform transition duration-200"
                   >
                     {t("order")}

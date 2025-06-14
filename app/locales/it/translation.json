@@ -131,5 +131,6 @@
     "about": "Chi Siamo",
     "contact": "Contatti"
   },
-  "currencyDisclaimer": "I valori in altre valute sono approssimativi e basati sui tassi di cambio attuali. Il prezzo finale potrebbe variare."
+  "currencyDisclaimer": "I valori in altre valute sono approssimativi e basati sui tassi di cambio attuali. Il prezzo finale potrebbe variare.",
+  "noCarsAvailable": "No cars available."
 }

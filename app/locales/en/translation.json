@@ -131,5 +131,6 @@
     "about": "About",
     "contact": "Contact"
   },
-  "currencyDisclaimer": "Values in other currencies are approximate and based on current exchange rates. Final price may vary."
+  "currencyDisclaimer": "Values in other currencies are approximate and based on current exchange rates. Final price may vary.",
+  "noCarsAvailable":"No cars available."
 }
