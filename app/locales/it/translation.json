@@ -132,5 +132,8 @@
     "contact": "Contatti"
   },
   "currencyDisclaimer": "I valori in altre valute sono approssimativi e basati sui tassi di cambio attuali. Il prezzo finale potrebbe variare.",
-  "noCarsAvailable": "No cars available."
+  "noCarsAvailable": "No cars available.",
+  "sportySedan": "Sporty Sedan",
+  "luxurySedan": "Luxury Sedan",
+  "truck": "Fuoristrada"
 }

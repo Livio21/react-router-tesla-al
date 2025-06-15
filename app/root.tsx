@@ -63,7 +63,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <div
                     className={
                       headerHovered
-                        ? "filter bldur-xs pointer-events-none select-none transition-all duration-200"
+                        ? "filter blur-xs pointer-events-none select-none transition-all duration-200"
                         : ""
                     }
                   >

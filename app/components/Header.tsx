@@ -388,11 +388,11 @@ export default function Header() {
 
   return (
     <section
-      className="sticky top-0 z-50 bg-white/50 dark:bg-black/40 backdrop-blur-lg border-b border-black/10 dark:border-white/20 dark:text-zinc-200 transition-all duration-300 ease-in-out"
+      className="sticky top-0 z-50 w-full bg-black/40 backdrop-blur-2xl text-white  dark:hover:text-white dark:hover:bg-black dark:bg-black/40 border-b border-black/10 dark:border-white/20 dark:text-zinc-200 transition-all duration-300 ease-in-out"
       onMouseLeave={handleMouseLeave}
     >
-      <header className="flex items-center justify-between px-8 py-3 font-[550] relative">
-        <div className="flex items-center gap-4">
+      <header className="flex items-center justify-between px-8 py-3 tracking-widest font-medium relative ">
+        <div className="flex items-center gap-4 ">
           <Link
             to="/"
             className="text-xl font-bold tracking-tight text-gray-900 dark:text-zinc-100 hover:opacity-80 transition bg-zinc-100 dark:bg-zinc-800 dark:lg:bg-inherit lg:bg-inherit p-2 rounded-lg"
@@ -543,7 +543,7 @@ export default function Header() {
               to="/cars"
               className="hover:bg-gray-100 dark:hover:bg-zinc-800 transition px-4 py-2 rounded"
             >
-              Makina
+              {t("header.cars")}
             </Link>
           </li>
           <li onMouseEnter={() => handleMouseEnter("about")}>
@@ -551,7 +551,7 @@ export default function Header() {
               to="/about"
               className="hover:bg-gray-100 dark:hover:bg-zinc-800 transition px-4 py-2 rounded"
             >
-              Rreth Nesh
+              {t("header.about")}
             </Link>
           </li>
           <li onMouseEnter={() => handleMouseEnter("services")}>
@@ -559,7 +559,7 @@ export default function Header() {
               to="/contact"
               className="hover:bg-gray-100 dark:hover:bg-zinc-800 transition px-4 py-2 rounded"
             >
-              Kontakt
+              {t("header.contact")}
             </Link>
           </li>
         </ul>

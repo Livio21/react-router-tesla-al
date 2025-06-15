@@ -132,5 +132,9 @@
     "contact": "Contact"
   },
   "currencyDisclaimer": "Values in other currencies are approximate and based on current exchange rates. Final price may vary.",
-  "noCarsAvailable":"No cars available."
+  "noCarsAvailable":"No cars available.",
+  "sportySedan": "Sporty Sedan",
+  "luxurySedan": "Luxury Sedan",
+  "luxurySuv": "Luxury SUV",
+   "truck": "Truck"
 }

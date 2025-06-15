@@ -131,6 +131,16 @@
     "about": "Rreth Nesh",
     "contact": "Kontakt"
   },
+  "header":{
+    "home": "Kreu",
+    "cars":"Makina",
+    "about": "Rreth Nesh",
+    "contact": "Kontakt"
+  },
   "currencyDisclaimer": "Vlerat në monedha të tjera janë të përafërta dhe bazohen në kurset aktuale të këmbimit. Çmimi përfundimtar mund të ndryshojë.",
-  "noCarsAvailable": "S'ka makina."
+  "noCarsAvailable": "S'ka makina.",
+  "sportySedan": "Sedan Sportiv",
+  "luxurySedan": "Sedan Luksoz",
+  "luxurySuv": "SUV Luksoz",
+  "truck": "Foristradë"
 }

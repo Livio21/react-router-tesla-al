@@ -305,7 +305,7 @@ export default function CarsPage() {
           <div
             className={`${
               filterOpen ? "block" : "hidden"
-            } sticky top-[64px] lg:block clear-both`}
+            } sticky top-[84px] lg:block clear-both transition-all duration-200`}
           >
             <div className="bg-inherit rounded-xl shadow-none p-0 mb-6">
               <div className="flex items-center gap-2 mb-4">
