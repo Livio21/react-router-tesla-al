@@ -303,15 +303,17 @@ export default function HomePage() {
     <div className="sticky bottom-0 left-0 right-0 z-30 border-t border-white/10 bg-white/70 dark:bg-black/70 p-3 text-center backdrop-blur-md mt-10">
       <Link
         to="/contact"
-        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-medium rounded-full hover:from-blue-700 hover:to-cyan-600 transition-all transform hover:scale-105 shadow-lg shadow-blue-500/30"
+        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white dark:bg-black/80 transition-all transform hover:scale-105 shadow-lg shadow-blue-500/30"
         title={t("requestTestDrive")}
       >
         <img
           src="https://maxus.sa/wp-content/uploads/2024/04/testdrive-icon.png"
           alt=""
-          className="w-6 h-6"
+          className="w-6 h-6 dark:invert"
         />
-        <span>{t("requestTestDrive")}</span>
+        <span className="bg-gradient-to-r from-blue-600 to-cyan-500  hover:from-blue-700 hover:to-cyan-600 text-transparent bg-clip-text font-medium ">
+          {t("requestTestDrive")}
+        </span>
       </Link>
     </div>
   );
