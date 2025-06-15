@@ -9,6 +9,7 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@portabletext/react": "^3.2.1",
     "@react-router/node": "^7.5.3",
     "@react-router/serve": "^7.5.3",
@@ -20,7 +21,8 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-i18next": "^15.5.2",
-    "react-router": "^7.5.3"
+    "react-router": "^7.5.3",
+    "swiper": "^11.2.8"
   },
   "devDependencies": {
     "@react-router/dev": "^7.5.3",

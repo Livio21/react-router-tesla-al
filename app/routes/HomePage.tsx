@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "~/sanity/client";
 import { ArrowDownIcon } from "~/components/Icons";
+import Slideshow from "~/components/Slideshow";
 
 const TawkTo = React.lazy(() => import("~/components/TwakTo"));
 const builder = imageUrlBuilder(client);
@@ -38,6 +39,49 @@ const cars: Car[] = [
     bodyType: "Luxury SUV",
     value: 40000,
   },
+];const servicesOffered = [
+  {
+    serviceType: "sales",
+    title: "Pre‑owned Tesla Sales",
+    description:
+      "Curated and fully inspected used Teslas, EU‑compliant and ready to drive.",
+    img: "/bodyshop-hero-tesla.jpg",
+  },
+  {
+    serviceType: "diagnostics",
+    title: "Battery Health & Diagnostics",
+    description:
+      "Full battery diagnostics, charge‑cycle reporting, and range assessments.",
+    img: "/teslabatterydiagnostics.jpg",
+  },
+  {
+    serviceType: "maintenance",
+    title: "Tesla Service & Maintenance",
+    description:
+      "Certified service for brakes, HVAC, software updates, and full system checks.",
+    img: "/tesla-service.webp",
+  },
+  {
+    serviceType: "parts",
+    title: "Battery Pack Repair & Replacement",
+    description:
+      "High‑voltage pack repair, module swaps, or full replacement/upgrades.",
+    img: "/Tesla-High-Voltage-Battery-reconditioning.jpg",
+  },
+  {
+    serviceType: "parts",
+    title: "OEM & Aftermarket Parts Service",
+    description:
+      "Genuine and certified aftermarket components—screens, sensors, drive units.",
+    img: "/poster.jpg",
+  },
+  {
+    serviceType: "trade-in",
+    title: "Trade‑In & Resale Support",
+    description:
+      "Sell or trade your Tesla—we handle inspections, valuations, and listings.",
+    img: "https://images.pexels.com/photos/97075/pexels-photo-97075.jpeg?auto=compress&cs=tinysrgb&w=1024&h=640",
+  },
 ];
 
 export default function HomePage() {
@@ -68,7 +112,6 @@ export default function HomePage() {
     playVideo();
   }, []);
 
-  // Auto-advance carousel
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveSlide((prev) => (prev === cars.length - 1 ? 0 : prev + 1));
@@ -84,7 +127,6 @@ export default function HomePage() {
       className="relative h-screen min-h-[800px] overflow-hidden bg-gradient-to-b from-gray-900 to-black snap-center"
     >
       <div className="absolute inset-0 z-0">
-        {/* Video background with fallback */}
         {isVideoPlaying ? (
           <video
             ref={videoRef}
@@ -107,7 +149,7 @@ export default function HomePage() {
       <div className="container mx-auto px-4 h-full flex items-center text-center relative z-10">
         <div className="max-w-4xl mx-auto animate-fade-in-up">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 tracking-tight">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">
+            <span className="bg-clip-text text-transparent bg-white/80">
               Permakinat.al
             </span>
           </h1>
@@ -117,7 +159,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/cars?brand=tesla"
-              className="px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold text-lg hover:from-blue-700 hover:to-cyan-600 focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transform hover:scale-[1.03] transition duration-300 shadow-lg shadow-blue-500/20"
+              className="px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold text-lg hover:from-blue-700/70 hover:to-cyan-600/70 focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transform hover:scale-[1.03] transition duration-300 shadow-lg shadow-blue-500/20"
             >
               {t("homepage.browseTeslas")}
             </Link>
@@ -148,7 +190,7 @@ export default function HomePage() {
     return (
       <section
         id="car-showcase"
-        className="py-16 lg:py-24 bg-gradient-to-b from-black to-gray-900"
+        className="py-16 lg:py-24 "
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -192,7 +234,7 @@ export default function HomePage() {
                           to={`/cars?brand=Tesla&model=${car.name
                             .toLowerCase()
                             .replace(" ", "-")}`}
-                          className="px-6 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
+                          className="px-6 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 backdrop-blur-2xl transition-colors"
                         >
                           {t("order")}
                         </Link>
@@ -200,7 +242,7 @@ export default function HomePage() {
                           to={`/info?model=${car.name
                             .toLowerCase()
                             .replace(" ", "-")}`}
-                          className="px-6 py-3 rounded-lg bg-white/10 text-white font-medium hover:bg-white/20 transition-colors"
+                          className="px-6 py-3 rounded-lg bg-white/10 text-white font-medium hover:bg-white/20 backdrop-blur-2xl transition-colors"
                         >
                           {t("learnMore")}
                         </Link>
@@ -258,7 +300,7 @@ export default function HomePage() {
 
   // Test Drive Footer
   const TestDriveFooter = () => (
-    <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-white/10 bg-black/80 p-3 text-center backdrop-blur-md">
+    <div className="sticky bottom-0 left-0 right-0 z-30 border-t border-white/10 bg-white/70 dark:bg-black/70 p-3 text-center backdrop-blur-md mt-10">
       <Link
         to="/contact"
         className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-medium rounded-full hover:from-blue-700 hover:to-cyan-600 transition-all transform hover:scale-105 shadow-lg shadow-blue-500/30"
@@ -273,9 +315,8 @@ export default function HomePage() {
       </Link>
     </div>
   );
-
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col bg-gradient-to-b dark:from-black dark:to-gray-900">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-white focus:text-black p-2 rounded"
@@ -289,6 +330,13 @@ export default function HomePage() {
 
       <HeroSection />
       <CarSlideshow />
+      <span>{t("servicesOffered")}</span>
+      <div className="text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          {t("homepage.servicesOffered")}
+        </h2>
+      </div>
+      <Slideshow slides={servicesOffered} t={t} />
       <TestDriveFooter />
     </main>
   );

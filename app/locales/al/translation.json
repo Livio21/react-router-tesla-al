@@ -46,12 +46,15 @@
     "supportDesc": "Konsulencë dhe ndihmë për çdo hap të blerjes ose shitjes së makinës.",
     "notSure": "Nuk jeni të sigurt çfarë makine të zgjidhni?",
     "contactForAdvice": "Na kontaktoni për këshillim falas.",
-    "from": "Nga"
+    "from": "Nga",
+    "featuredCars":"Makina Tesla",
+    "featuredCarsDesc":"Gamë e gjëre modelesh Tesla.",
+    "servicesOffered": "Serviset e ofruara."
   },
   "contact": {
     "title": "Na Kontaktoni",
     "reachUs": "Na Gjeni",
-    "sendMessage": "Na Dërgoni një Mesazh",
+    "sendMessage": "Dërgoni një Mesazh",
     "name": "Emri",
     "email": "Email",
     "message": "Mesazhi",
@@ -129,7 +132,9 @@
     "disclaimer": "Kjo faqe interneti është një projekt i pavarur dhe nuk është i lidhur me Tesla, Inc. Të gjitha markat tregtare, logot dhe emrat e markave janë pronë e pronarëve të tyre përkatës.",
     "home": "Kreu",
     "about": "Rreth Nesh",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
   },
   "header":{
     "home": "Kreu",
@@ -168,7 +173,10 @@
   "tiktok": "TikTok",
   "skipToContent": "Kalo te përmbajtja kryesore",
   "addToCompare": "Krahaso",
-  "added":"E Shtuar"
+  "added":"E Shtuar",
+  "bookService": "Kontakto",
+  "requestTestDrive": "Provo Makina"
+
 }
 
 
