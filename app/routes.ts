@@ -7,4 +7,5 @@ export default [
   route("cars", "routes/CarsPage.tsx"),
   route("cars/:brand/:model/:slug", "routes/CarDetailsPage.tsx"),
   route("info/:model", "routes/CarInfo.tsx"),
+  route("compare", "routes/ComparePage.tsx"),
 ] satisfies RouteConfig;

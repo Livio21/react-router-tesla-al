@@ -16,6 +16,8 @@ import { HeaderHoverContext } from "./components/Header";
 import { AnimatePresence, motion } from "framer-motion";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
+import { ComparisonProvider } from './context/ComparisonContext';
+import ComparisonBar from './components/ComparisonBar';
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -48,29 +50,32 @@ export function Layout({ children }: { children: React.ReactNode }) {
             value={{ headerHovered, setHeaderHovered }}
           >
             <I18nextProvider i18n={i18n}>
-              <main className="flex flex-col min-h-screen bg-white dark:bg-zinc-900">
-                <Header />
-                <div
-                  className={`flex-grow transition-all duration-200${
-                    headerHovered
-                      ? " filter blur-xs pointer-events-none select-none"
-                      : ""
-                  }`}
-                >
-                  {children}
-                </div>
-                {!hideFooter && (
+              <ComparisonProvider>
+                <main className="flex flex-col min-h-screen bg-white dark:bg-zinc-900 ">
+                  <Header />
+                  <ComparisonBar />
                   <div
-                    className={
+                    className={`flex-grow transition-all duration-200${
                       headerHovered
-                        ? "filter blur-xs pointer-events-none select-none transition-all duration-200"
+                        ? " filter blur-xs pointer-events-none select-none "
                         : ""
-                    }
+                    }`}
                   >
-                    <Footer />
+                    {children}
                   </div>
-                )}
-              </main>
+                  {!hideFooter && (
+                    <div
+                      className={
+                        headerHovered
+                          ? "filter blur-xs pointer-events-none select-none transition-all duration-200"
+                          : ""
+                      }
+                    >
+                      <Footer />
+                    </div>
+                  )}
+                </main>
+              </ComparisonProvider>
             </I18nextProvider>
           </HeaderHoverContext.Provider>
           <ScrollRestoration />

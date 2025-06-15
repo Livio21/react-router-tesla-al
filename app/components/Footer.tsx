@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="w-full p-4 font-medium text-[12px] bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border-t border-gray-200 dark:border-zinc-700">
       <div className="container mx-auto">
-        <p className="mb-4 text-zinc-600">
+        <p className="mb-4 text-zinc-600 text-center">
           {t("footer.disclaimer")}
         </p>
         <nav>
@@ -30,7 +30,7 @@ export default function Footer() {
           </ul>
         </nav>
       </div>
-      <div className="text-center mt-4 mb-12">
+      <div className="text-center mt-4 ">
         <p className="">
           {t("builtBy")}{" "}
           <a href="https://www.linkedin.com/in/livio-macaj/" target="new">

@@ -142,5 +142,33 @@
   "sportySedan": "Sedan Sportiv",
   "luxurySedan": "Sedan Luksoz",
   "luxurySuv": "SUV Luksoz",
-  "truck": "Foristradë"
+  "truck": "Foristradë",
+  "about": {
+    "title": "Rreth Permakinat.al",
+    "intro1": "Permakinat.al është një kompani shqiptare me bazë në Durrës, e themeluar në vitin 2022 dhe e specializuar në automjete elektrike si Tesla.",
+    "intro2": "E themeluar dhe menaxhuar nga Aldo Sulaj, kompania ka fituar besimin e qindra klientëve përmes rrjeteve sociale dhe shërbimeve të shkëlqyera.",
+    "servicesTitle": "Shërbimet tona përfshijnë:",
+    "services": {
+      "sale": "Shitje të makinave të reja dhe të përdorura të importuara, veçanërisht Tesla.",
+      "parts": "Pjesë këmbimi origjinale për Tesla dhe marka të tjera.",
+      "maintenance": "Shërbime mirëmbajtjeje dhe riparimi.",
+      "rental": "Qira afatshkurtra dhe afatgjata të makinave."
+    },
+    "contactInfo": "Adresa jonë është në Lagjia Nr.14, Ura e Dajlanit, Durrës. Na kontaktoni në +355 68 364 8244 ose permakinat@gmail.com.",
+    "socialsTitle": "Na ndiqni në rrjetet sociale:",
+    "socials": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "tiktok": "TikTok"
+    },
+    "browseCars": "Shfleto Makinat Tona"
+  },
+  "whatsapp": "WhatsApp",
+  "instagram": "Instagram",
+  "tiktok": "TikTok",
+  "skipToContent": "Kalo te përmbajtja kryesore",
+  "addToCompare": "Krahaso",
+  "added":"E Shtuar"
 }
+
+

@@ -136,5 +136,31 @@
   "sportySedan": "Sporty Sedan",
   "luxurySedan": "Luxury Sedan",
   "luxurySuv": "Luxury SUV",
-   "truck": "Truck"
+   "truck": "Truck",
+   "about": {
+    "title": "About Permakinat.al",
+    "intro1": "Permakinat.al is an Albanian automotive company based in Durrës, founded in 2022 and specializing in electric vehicles like Tesla.",
+    "intro2": "Founded and managed by Aldo Sulaj, the company has built trust with hundreds of clients through social media and excellent service.",
+    "servicesTitle": "Our services include:",
+    "services": {
+      "sale": "Sale of new and used imported cars, especially Teslas.",
+      "parts": "Original spare parts for Tesla and other brands.",
+      "maintenance": "Maintenance and repair services.",
+      "rental": "Short and long-term car rentals."
+    },
+    "contactInfo": "Our address is in District No.14, Ura e Dajlanit, Durrës. Contact us at +355 68 364 8244 or permakinat@gmail.com.",
+    "socialsTitle": "Follow us on social media:",
+    "socials": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "tiktok": "TikTok"
+    },
+    "browseCars": "Browse Our Cars"
+  },
+  "whatsapp": "WhatsApp",
+  "instagram": "Instagram",
+  "tiktok": "TikTok",
+  "skipToContent": "Skip to main content",
+  "addToCompare": "Add to compare",
+  "added": "Added"
 }

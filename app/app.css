@@ -7,14 +7,13 @@
       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
       "Noto Color Emoji";
     color-scheme: light;
+    scrollbar-width:none;
+    &::-webkit-scrollbar{
+      display: none;
+    }
   }
 
-  /* globals.css or your base stylesheet */
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+}
+@utility scrollbar-hide {
+  @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
 }

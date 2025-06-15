@@ -5,28 +5,30 @@ import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "~/sanity/client";
 import { div } from "framer-motion/client";
+import { useComparison } from '../context/ComparisonContext';
+import PaintIcon from "~/components/PaintIcon";
 
 interface Car {
   _id: string;
+  name: string;
   slug?: { current: string };
   model?: string;
-  name: string;
   brand: string;
-  year: number;
+  year?: number;
   description?: string;
-  range?: number; // Added for range filter
+  range?: number;
   currentPrice: string;
   previousPrice?: string;
-  mileage: number;
+  mileage?: number;
   gallery?: any[];
   availability?: boolean;
   fuelType?: string;
   transmission?: string;
   bodyType?: string;
   location?: string;
-  color?: string; // Added for color filter
-  new?: boolean; // Added for new/used filter
-  features?: string[]; // Added for features
+  color?: string;
+  new?: boolean;
+  features?: string[];
 }
 
 const builder = imageUrlBuilder(client);
@@ -35,6 +37,7 @@ const urlFor = (source: any) =>
 
 export default function CarsPage() {
   const { t } = useTranslation();
+  const { addCar, isInComparison, removeCar } = useComparison();
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -110,7 +113,7 @@ export default function CarsPage() {
     )
   ).sort();
   const years = Array.from(new Set(cars.map((car) => car.year))).sort(
-    (a, b) => b - a
+    (a, b) => (b ?? 0) - (a ?? 0) 
   );
 
   // Get unique values for new filters
@@ -164,10 +167,10 @@ export default function CarsPage() {
     ) {
       return false;
     }
-    if (minMileage && car.mileage < Number(minMileage)) {
+    if (minMileage && (car.mileage ?? 0) < Number(minMileage)) {
       return false;
     }
-    if (maxMileage && car.mileage > Number(maxMileage)) {
+    if (maxMileage && (car.mileage ?? 0) > Number(maxMileage)) {
       return false;
     }
     if (fuelTypeFilter && car.fuelType !== fuelTypeFilter) {
@@ -197,7 +200,7 @@ export default function CarsPage() {
 
   // Sort the filtered cars based on the selected option
   if (sortOption) {
-    filteredCars.sort((a, b) => {
+    filteredCars.sort((a: Car, b: Car) => {
       const priceA = Number(a.currentPrice.replace(/[^\d]/g, ""));
       const priceB = Number(b.currentPrice.replace(/[^\d]/g, ""));
 
@@ -207,13 +210,13 @@ export default function CarsPage() {
         case "priceDesc":
           return priceB - priceA;
         case "yearDesc":
-          return b.year - a.year;
+          return (b.year ?? 0) - (a.year ?? 0);
         case "yearAsc":
-          return a.year - b.year;
+          return (a.year ?? 0) - (b.year ?? 0);
         case "mileageAsc":
-          return a.mileage - b.mileage;
+          return (a.mileage ?? 0) - (b.mileage ?? 0);
         case "mileageDesc":
-          return b.mileage - a.mileage;
+          return (b.mileage ?? 0) - (a.mileage ?? 0);
         default:
           return 0;
       }
@@ -270,29 +273,9 @@ export default function CarsPage() {
     );
   }
 
-  const colorClassMap: Record<string, string> = {
-    blue: "border-blue-300 from-blue-300 to-blue-700",
-    red: "border-red-300 from-red-300 to-red-700 to-65%",
-    green: "border-green-300 from-green-400 to-green-700",
-    yellow: "border-yellow-300 from-yellow-400 to-yellow-700",
-    black: "border-gray-700 from-gray-700 to-black",
-    white: "border-gray-300 from-white to-gray-200",
-    gray: "border-gray-400 from-gray-400 to-gray-700",
-    silver: "border-gray-400 from-gray-300 to-gray-500",
-  };
-
-  const CarPaint: React.FC<{ color: string }> = ({ color }) => {
-    const gradient =
-      colorClassMap[color.toLowerCase()] || "from-gray-400 to-gray-700";
-    return (
-      <div
-        className={`size-4 rounded-full border bg-radial-[at_40%_15%] ${gradient} `}
-      ></div>
-    );
-  };
 
   return (
-    <div className=" mx-auto px-4 py-8 dark:text-zinc-200 ">
+    <div className=" mx-auto px-4 py-8 dark:text-zinc-200  ">
       <h1 className="text-3xl font-bold p-4">{t("inventory", "Makinat")}</h1>
       <div className="flex flex-col lg:flex-row gap-8">
         <aside className="w-full lg:w-72 px-4">
@@ -898,6 +881,19 @@ export default function CarsPage() {
                       navigate(detailsUrl);
                   }}
                 >
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      isInComparison(car._id) ? removeCar(car._id) : addCar(car);
+                    }}
+                    className={`absolute top-3 right-3 z-10 px-3 py-1 rounded-full text-sm font-medium transition-colors cursor-pointer ${
+                      isInComparison(car._id)
+                        ? `bg-green-500 text-white hover:bg-red-500 hover:text-red-500 hover:after:content-['Remove'] hover:after:text-white after:absolute after:top-0 after:right-0 after:translate-y-1   after:w-full after:h-full`
+                        : "bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700"
+                    }`}
+                  >
+                    {isInComparison(car._id) ? t("added") : t("addToCompare")}
+                  </button>
                   {!car.availability && (
                     <span className="absolute top-3 left-3 z-10 px-3 py-1 text-xl rounded bg-red-600 text-white font-bold shadow">
                       {t("sold")}
@@ -932,8 +928,8 @@ export default function CarsPage() {
                           {car.year}
                         </span>
                       </div>
-                      <div className="flex gap-4 items-center p-">
-                        <span className=" font-extrabold text-black dark:text-zinc-100">
+                      <div className="flex gap-4 items-center p-1">
+                        <span className="font-extrabold text-black dark:text-zinc-100">
                           € {euroValue.toLocaleString()}
                         </span>
                         {onSale && previousEuroValue && (
@@ -946,17 +942,19 @@ export default function CarsPage() {
                         {" "}
                         {car.new
                           ? t("newVehicle")
-                          : `${t(
-                              "usedCarWith"
-                            )}  ${car.mileage.toLocaleString()} Km`}
+                          : `${t("usedCarWith")}  ${(
+                              car.mileage ?? 0
+                            ).toLocaleString()} Km`}
                       </span>
                       <span className="p-1">
                         {car.fuelType == "Electric"
-                          ? `${car.fuelType} ${t("withRange")} ${car.range}Km  `
+                          ? `${car.fuelType} ${t("withRange")} ${
+                              car.range ?? 0
+                            }Km  `
                           : car.fuelType}
                       </span>
                       <div className="relative group hover:bg-zinc-200 w-fit p-1 rounded-md">
-                        <CarPaint color={car.color ?? ""} />
+                        <PaintIcon color={car.color ?? ""} />
                         {car.features && car.features.length > 0 && (
                           <div className="absolute left-0 top-full mt-4 z-20 min-w-[180px] bg-white dark:bg-zinc-800 rounded-lg shadow-xl p-3 text-xs text-black dark:text-gray-100 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity">
                             <ul className="flex gap-1 flex-wrap">

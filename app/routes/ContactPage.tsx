@@ -30,7 +30,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div className="space-y-8">
             <div className="rounded-2xl border border-black/10 dark:border-white/20 bg-white/50 dark:bg-black/40 backdrop-blur-sm p-6 space-y-6 transition-all duration-300">
-              {/* <h2 className="text-2xl font-semibold">{t("contact.reachUs", "Reach Us")}</h2> */}
+              <h2 className="text-2xl font-semibold">{t("contact.reachUs", "Reach Us")}</h2>
               
               <div className="space-y-4">
                 <a
@@ -43,12 +43,12 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <span className="text-gray-800 dark:text-gray-200 group-hover:underline">
-                    +355 69 123 4567
+                    +355 68 364 8244
                   </span>
                 </a>
 
                 <a
-                  href="mailto:info@tesla.al"
+                  href="mailto:permakinat@gmail.com"
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800 transition group"
                 >
                   <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400">
@@ -57,12 +57,12 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <span className="text-gray-800 dark:text-gray-200 group-hover:underline">
-                    info@tesla.al
+                    permakinat@gmail.com
                   </span>
                 </a>
 
                 <a
-                  href="https://wa.me/355691234567"
+                  href="https://wa.me/355683648244"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800 transition group"
@@ -78,7 +78,7 @@ export default function ContactPage() {
                 </a>
 
                 <a
-                  href="https://instagram.com/tesla.al"
+                  href="https://instagram.com/permakinat.al"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800 transition group"
@@ -89,12 +89,12 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <span className="text-gray-800 dark:text-gray-200 group-hover:underline">
-                    @tesla.al
+                   @permakinat.al
                   </span>
                 </a>
 
                 <a
-                  href="https://tiktok.com/@tesla.al"
+                  href="https://tiktok.com/@permakinat.al"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800 transition group"
@@ -106,12 +106,12 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <span className="text-gray-800 dark:text-gray-200 group-hover:underline">
-                    @tesla.al
+                    @permakinat.al // @tesla.al
                   </span>
                 </a>
               </div>
             </div>
-          </div>          {/* Contact Form */}
+          </div>         
           <div className="rounded-2xl border border-black/10 dark:border-white/20 bg-white/50 dark:bg-black/40 backdrop-blur-sm p-6 transition-all duration-300">
             <h2 className="text-2xl font-semibold mb-6">{t("contact.sendMessage", "Send us a Message")}</h2>
             

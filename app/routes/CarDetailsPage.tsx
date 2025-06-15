@@ -1,10 +1,11 @@
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, Link } from "react-router";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "~/sanity/client";
 import { useTranslation } from "react-i18next";
 import ImageCarousel from "~/components/ImageCarousel";
+import { CurrencyInfoIcon } from "~/components/Icons";
 
 interface Car {
   _id: string;
@@ -57,7 +58,6 @@ const useCurrencyRates = () => {
         }
       })
       .catch(() => {
-        // fallback to static rates if fetch fails
         setRates({ USD: 1.08, ALL: 98, GBP: 0.86 });
       });
   }, []);
@@ -66,7 +66,6 @@ const useCurrencyRates = () => {
 };
 
 function parseEuro(price: string) {
-  // Extract number from "12,000 €" or "12000€"
   const num = Number(price.replace(/[^\d]/g, ""));
   return isNaN(num) ? 0 : num;
 }
@@ -90,55 +89,47 @@ export default function CarDetailsPage() {
   if (!brand || !model || !slug) {
     return <div className="text-center py-10 text-xl">Car not found.</div>;
   }
+  
   const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Spinner state for minimum loading time
   const [showSpinner, setShowSpinner] = useState(false);
-  const minLoadingTime = 400; // ms
-
-  // Use the currency rates hook
+  const minLoadingTime = 400;
   const rates = useCurrencyRates();
 
   useEffect(() => {
-    let minTimeout: NodeJS.Timeout;
-    setShowSpinner(true);
-
-    minTimeout = setTimeout(() => {
-      // Spinner will be hidden after minLoadingTime, or when loading is done, whichever is later
+    const minTimeout = setTimeout(() => {
       if (!loading) setShowSpinner(false);
     }, minLoadingTime);
 
-    return () => {
-      clearTimeout(minTimeout);
-    };
+    return () => clearTimeout(minTimeout);
   }, [loading]);
 
   useEffect(() => {
     setLoading(true);
     setShowSpinner(true);
+    
     client
       .fetch<Car>(
         `*[_type == "car" && slug.current == $slug][0]{
-        _id,
-        name,
-        currentPrice,
-        previousPrice,
-        range,
-        gallery,
-        description,
-        brand,
-        model,
-        year,
-        mileage,
-        fuelType,
-        transmission,
-        bodyType,
-        location,
-        features,
-        availability
-      }`,
+          _id,
+          name,
+          currentPrice,
+          previousPrice,
+          range,
+          gallery,
+          description,
+          brand,
+          model,
+          year,
+          mileage,
+          fuelType,
+          transmission,
+          bodyType,
+          location,
+          features,
+          availability
+        }`,
         { slug }
       )
       .then((data) => {
@@ -156,14 +147,18 @@ export default function CarDetailsPage() {
       });
   }, [slug]);
 
-  if (loading || showSpinner)
+  if (loading || showSpinner) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <span className="inline-block w-12 h-12 border-4 border-gray-300 border-t-gray-900 dark:border-t-zinc-100 rounded-full animate-spin" />
       </div>
     );
-  if (error)
+  }
+  
+  if (error) {
     return <div className="text-center py-10 text-red-500">{error}</div>;
+  }
+  
   if (!car) return null;
 
   // --- Currency conversion logic ---
@@ -178,216 +173,222 @@ export default function CarDetailsPage() {
   const disclaimer = t("currencyDisclaimer");
 
   return (
-    <div className="max-w-full max-h-full bg-white dark:bg-zinc-900 dark:text-zinc-200 text-zinc-800 lg:pr-4">
-      <div className="grid grid-cols-1 grid-rows-[0.1fr_1fr] lg:grid-rows-1 lg:grid-cols-[5fr_0.1fr_2fr] h-[calc(100vh-64px)] align-middle">
-        {car.gallery && car.gallery.length > 0 ? (
-          <ImageCarousel
-            images={car.gallery.map((img) => urlFor(img).toString())}
-            carName={car.name}
-          />
-        ) : (          <div className="w-full h-64 flex items-center justify-center text-gray-400">
-            {t("noImage")}
-          </div>
-        )}
-        <div className="hidden lg:block w-[1px] my-3 bg-zinc-200 dark:bg-zinc-700 justify-self-center"></div>
-        <div className="overflow-y-auto scroll-hide ">
-          <style>
-            {`
-              .currency-tooltip {
-                position: relative;
-                display: inline-block;
-                z-index: 0;
-              }
-              .currency-tooltip .currency-tooltiptext {
-                visibility: hidden;
-                width: 220px;
-                background-color: #222;
-                color: #fff;
-                text-align: left;
-                border-radius: 6px;
-                padding: 8px 12px;
-                position: absolute;
-                bottom: 125%;
-                left: 50%;
-                transform: translateX(-50%);
-                opacity: 0;
-                transition: opacity 0.2s;
-                font-size: 12px;
-                pointer-events: none;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-              }
-              .currency-tooltip:hover .currency-tooltiptext,
-              .currency-tooltip:focus-within .currency-tooltiptext {
-                visibility: visible;
-                opacity: 1;
-                pointer-events: auto;
-              }
-              .dark .currency-tooltip .currency-tooltiptext {
-                background-color: #fafafa;
-                color: #18181b;
-              }
-              .scroll-hide::-webkit-scrollbar { display: none; }
-              .scroll-hide { -ms-overflow-style: none; scrollbar-width: none; }
-            `}
-          </style>
-          <div className="w-full max-w-xl mx-auto gap-8 items-center p-4">
-            <div className="flex flex-col items-center gap-8 w-full overflow-y-auto scroll-hide ">
-              <h1 className="text-4xl font-bold text-center">{car.name} </h1>
-              <span
-                className={`px-3 py-1 rounded text-xs font-medium  ${
-                  car.availability
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
-                }`}
-              >
-                {car.availability ? t("available") : t("sold")}
-              </span>
-              <ol className="flex justify-around text-center gap-1.5 w-full max-w-md mb-4">
-                <li className="flex-1 flex flex-col items-center justify-center">
-                  <div>
-                    <span>{car.range}</span>
-                    <span className="text-sm font-light">km</span>
+    <div className="bg-white dark:bg-zinc-900 dark:text-zinc-200 text-zinc-800">
+      <div className="flex flex-col lg:flex-row h-[calc(100vh-64px)]">
+        {/* Image Gallery - Fixed Width */}
+        <div className="lg:w-3/5 h-[50vh] lg:h-full overflow-hidden">
+          {car.gallery && car.gallery.length > 0 ? (
+            <ImageCarousel
+              images={car.gallery.map((img) => urlFor(img).toString())}
+              carName={car.name}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100 dark:bg-zinc-800">
+              {t("noImage")}
+            </div>
+          )}
+        </div>
+        
+        {/* Details Section - Scrollable */}
+        <div className="lg:w-2/5 lg:h-full flex flex-col">
+          <div className="flex-1 overflow-y-auto scroll-hide p-4 lg:p-6">
+            <div className="max-w-2xl mx-auto">
+              {/* Title and Status */}
+              <div className="mb-6 text-center">
+                <h1 className="text-3xl md:text-4xl font-bold mb-2">
+                  {car.name}
+                </h1>
+                <span
+                  className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                    car.availability
+                      ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                      : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
+                  }`}
+                >
+                  {car.availability ? t("available") : t("sold")}
+                </span>
+              </div>
+              
+              {/* Key Specs */}
+              <div className="grid grid-cols-3 gap-4 mb-8">
+                <div className="bg-gray-50 dark:bg-zinc-800 p-4 rounded-xl text-center">
+                  <div className="text-xl font-semibold">{car.range}</div>
+                  <div className="text-sm text-gray-500 dark:text-zinc-400 mt-1">
+                    {t("range")} km
                   </div>
-                  <span className="text-sm font-light">{t("range")}</span>
-                </li>
-                <li className="flex-1 flex flex-col items-center justify-center">
-                  <div>
-                    <span>{car.year}</span>
+                </div>
+                <div className="bg-gray-50 dark:bg-zinc-800 p-4 rounded-xl text-center">
+                  <div className="text-xl font-semibold">{car.year}</div>
+                  <div className="text-sm text-gray-500 dark:text-zinc-400 mt-1">
+                    {t("year")}
                   </div>
-                  <span className="text-sm font-light">{t("year")}</span>
-                </li>
-                <li className="flex-1 flex flex-col items-center justify-center">
-                  <div>
-                    <span>{car.mileage?.toLocaleString()}</span>
-                    <span className="text-sm font-light">km</span>
+                </div>
+                <div className="bg-gray-50 dark:bg-zinc-800 p-4 rounded-xl text-center">
+                  <div className="text-xl font-semibold">
+                    {car.mileage?.toLocaleString()}
                   </div>
-                  <span className="text-sm font-light">{t("mileage")}</span>
-                </li>
-              </ol>
-              <hr className="w-full h-[1px] text-zinc-400 dark:text-zinc-700 bg-zinc-400 dark:bg-zinc-700" />
-              <div className="flex flex-col gap-6 w-full items-center mb-20">
-                <div className="flex flex-col items-center gap-2">
-                  <span className="text-2xl font-bold flex items-center gap-2">
-                    {onSale && previousEuroValue && (
-                      <span className="line-through text-red-400 text-lg font-normal mr-2">
-                        {previousEuroValue.toLocaleString()} €
+                  <div className="text-sm text-gray-500 dark:text-zinc-400 mt-1">
+                    {t("mileage")} km
+                  </div>
+                </div>
+              </div>
+              
+              {/* Pricing */}
+              <div className="bg-gray-50 dark:bg-zinc-800 rounded-xl p-6 mb-8">
+                <div className="flex justify-between items-start mb-4">
+                  <h2 className="text-lg font-semibold">{t("price")}</h2>
+                  <div className="relative group">
+                    <CurrencyInfoIcon className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+                    <div className="absolute z-10 left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block w-64 p-3 text-xs text-white bg-gray-800 rounded-lg shadow-lg">
+                      {disclaimer}
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-end justify-between">
+                  <div>
+                    <div className="flex items-baseline">
+                      <span className="text-2xl font-bold">
+                        {euroValue.toLocaleString()} €
                       </span>
-                    )}
-                    {euroValue.toLocaleString()}{" "}
-                    <span className="text-lg">€</span>
-                    {onSale && (
-                      <span className="ml-2 px-2 py-1 rounded bg-red-100 text-red-700 text-xs font-semibold">
-                        {t("onSale")}
-                      </span>
-                    )}
+                      {onSale && previousEuroValue && (
+                        <span className="ml-3 line-through text-red-500 dark:text-red-400 text-lg">
+                          {previousEuroValue.toLocaleString()} €
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="mt-2 text-sm text-gray-600 dark:text-zinc-400">
+                      <div>{allValue.toLocaleString()} ALL</div>
+                      <div>
+                        {usdValue.toLocaleString(undefined, {
+                          style: "currency",
+                          currency: "USD",
+                          maximumFractionDigits: 0,
+                        })}
+                      </div>
+                      <div>
+                        {gbpValue.toLocaleString(undefined, {
+                          style: "currency",
+                          currency: "GBP",
+                          maximumFractionDigits: 0,
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {onSale && (
+                    <span className="px-3 py-1 rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 text-sm font-semibold">
+                      {t("onSale")}
+                    </span>
+                  )}
+                </div>
+              </div>
+              
+              {/* Car Details */}
+              <div className="grid grid-cols-2 gap-3 mb-8">
+                <div className="flex items-center p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg">
+                  <span className="text-gray-500 dark:text-zinc-400 text-sm mr-2">
+                    {t("brand")}:
                   </span>
-                  <div className="flex flex-col gap-0.5 mt-1 text-xs opacity-80 text-center z-0">
-                    <span className="">
-                      {allValue.toLocaleString(undefined, {
-                        maximumFractionDigits: 0,
-                      })}{" "}
-                      ALL
-                    </span>
-                    <span>
-                      {usdValue.toLocaleString(undefined, {
-                        style: "currency",
-                        currency: "USD",
-                        maximumFractionDigits: 0,
-                      })}{" "}
-                      USD
-                    </span>
-                    <span>
-                      {gbpValue.toLocaleString(undefined, {
-                        style: "currency",
-                        currency: "GBP",
-                        maximumFractionDigits: 0,
-                      })}{" "}
-                      GBP
-                    </span>
+                  <span className="font-medium">{car.brand}</span>
+                </div>
+                <div className="flex items-center p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg">
+                  <span className="text-gray-500 dark:text-zinc-400 text-sm mr-2">
+                    {t("model")}:
+                  </span>
+                  <span className="font-medium">{car.model}</span>
+                </div>
+                <div className="flex items-center p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg">
+                  <span className="text-gray-500 dark:text-zinc-400 text-sm mr-2">
+                    {t("bodyType")}:
+                  </span>
+                  <span className="font-medium">{car.bodyType}</span>
+                </div>
+                <div className="flex items-center p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg">
+                  <span className="text-gray-500 dark:text-zinc-400 text-sm mr-2">
+                    {t("fuelType")}:
+                  </span>
+                  <span className="font-medium">{car.fuelType}</span>
+                </div>
+                <div className="flex items-center p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg">
+                  <span className="text-gray-500 dark:text-zinc-400 text-sm mr-2">
+                    {t("transmission")}:
+                  </span>
+                  <span className="font-medium">{car.transmission}</span>
+                </div>
+                <div className="flex items-center p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg">
+                  <span className="text-gray-500 dark:text-zinc-400 text-sm mr-2">
+                    {t("location")}:
+                  </span>
+                  <span className="font-medium">{car.location}</span>
+                </div>
+              </div>
+              
+              {/* Features */}
+              {car.features && car.features.length > 0 && (
+                <div className="mb-8">
+                  <h3 className="text-lg font-semibold mb-3">{t("options")}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {car.features.map((feature, idx) => (
+                      <span
+                        key={idx}
+                        className="px-3 py-1.5 bg-gray-100 dark:bg-zinc-700 rounded-full text-sm"
+                      >
+                        {feature}
+                      </span>
+                    ))}
                   </div>
-                  <div className="flex flex-wrap gap-2 justify-center mt-2">
-                    <span className="bg-gray-100 dark:bg-zinc-700 px-3 py-1 rounded text-xs font-medium">
-                      {car.brand}
-                    </span>
-                    {car.model && (
-                      <span className="bg-gray-100 dark:bg-zinc-700 px-3 py-1 rounded text-xs font-medium">
-                        {car.model}
-                      </span>
-                    )}
-                    {car.bodyType && (
-                      <span className="bg-gray-100 dark:bg-zinc-700 px-3 py-1 rounded text-xs font-medium">
-                        {car.bodyType}
-                      </span>
-                    )}
-                    {car.fuelType && (
-                      <span className="bg-gray-100 dark:bg-zinc-700 px-3 py-1 rounded text-xs font-medium">
-                        {car.fuelType}
-                      </span>
-                    )}
-                    {car.transmission && (
-                      <span className="bg-gray-100 dark:bg-zinc-700 px-3 py-1 rounded text-xs font-medium">
-                        {car.transmission}
-                      </span>
-                    )}
-                    {car.location && (
-                      <span className="bg-gray-100 dark:bg-zinc-700 px-3 py-1 rounded text-xs font-medium">
-                        {car.location}
-                      </span>
+                </div>
+              )}
+              
+              {/* Description */}
+              {car.description && Array.isArray(car.description) && (
+                <div className="mb-8">
+                  <h3 className="text-lg font-semibold mb-3">
+                    {t("description")}
+                  </h3>
+                  <div className="prose prose-sm max-w-none text-gray-700 dark:text-zinc-300">
+                    {car.description.map((block, i) =>
+                      block.children?.map((child, j) => (
+                        <p key={i + "-" + j} className="mb-3">
+                          {child.text}
+                        </p>
+                      ))
                     )}
                   </div>
                 </div>
-                {car.features && car.features.length > 0 && (
-                  <div className="flex flex-col gap-2 w-full items-center">
-                    <h3 className="text-lg font-semibold  text-center">
-                      {t("options")}
-                    </h3>
-                    <ul className="flex flex-wrap gap-2 justify-center">
-                      {car.features.map((feature, idx) => (
-                        <li
-                          key={idx}
-                          className="bg-gray-100 dark:bg-zinc-700 px-3 py-1 rounded text-xs"
-                        >
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {car.description && Array.isArray(car.description) && (
-                  <div className="flex flex-col gap-2 w-full items-center">
-                    <h3 className="text-lg font-semibold  text-center">
-                      {t("description")}
-                    </h3>
-                    <div className="prose prose-sm max-w-none  ">
-                      {car.description.map((block, i) =>
-                        block.children?.map((child, j) => (
-                          <p key={i + "-" + j}>{child.text}</p>
-                        ))
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className="flex gap-4 justify-between items-center ">
-                <Link
-                  to={`/cars?brand=${encodeURIComponent(car.brand || "")}${
-                    car.model
-                      ? `&model=${encodeURIComponent(
-                          car.model.replace(/\s+/g, "-").toLowerCase()
-                        )}`
-                      : ""
-                  }`}
-                  className="text-sm border-b-2 border-transparent hover:border-gray-900 hover:opacity-80 "
+              )}
+            </div>
+          </div>
+          
+          {/* Sticky Action Bar */}
+          <div className="sticky bottom-0 bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 p-4">
+            <div className="max-w-2xl mx-auto flex justify-between items-center">
+              <Link
+                to={`/cars?brand=${encodeURIComponent(car.brand || "")}`}
+                className="flex items-center text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 mr-1"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
                 >
-                  ← {t("backToCars")}
-                </Link>
-                <Link
-                  to="/contact"
-                  className="ml-4 px-4 py-2 rounded bg-gray-900 text-white dark:bg-zinc-600  hover:bg-gray-800 text-sm font-medium transition"
-                >
-                  {t("contactForThisCar")}
-                </Link>
-              </div>
+                  <path
+                    fillRule="evenodd"
+                    d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {t("backToCars")}
+              </Link>
+              <Link
+                to="/contact"
+                className="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors shadow-md hover:shadow-lg"
+              >
+                {t("contactForThisCar")}
+              </Link>
             </div>
           </div>
         </div>
