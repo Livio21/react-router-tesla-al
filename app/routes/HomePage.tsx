@@ -149,7 +149,7 @@ export default function HomePage() {
       <div className="container mx-auto px-4 h-full flex items-center text-center relative z-10">
         <div className="max-w-4xl mx-auto animate-fade-in-up">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 tracking-tight">
-            <span className="bg-clip-text text-transparent bg-white/80">
+            <span className="bg-clip-text text-transparent bg-white/80 font-[]">
               Permakinat.al
             </span>
           </h1>
