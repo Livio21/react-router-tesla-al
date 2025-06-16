@@ -477,7 +477,7 @@ const MobileMenu = ({
         <Link
           to="/cars"
           onClick={onClose}
-          className="py-3 px-2 rounded hover:bg-gray-100 dark:hover:bg-zinc-800 block"
+          className="py-3 px-2 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-zinc-800 block"
         >
           Makina
         </Link>
@@ -486,7 +486,7 @@ const MobileMenu = ({
         <Link
           to="/about"
           onClick={onClose}
-          className="py-3 px-2 rounded hover:bg-gray-100 dark:hover:bg-zinc-800 block"
+          className="py-3 px-2 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-zinc-800 block"
         >
           Rreth Nesh
         </Link>
@@ -495,7 +495,7 @@ const MobileMenu = ({
         <Link
           to="/contact"
           onClick={onClose}
-          className="py-3 px-2 rounded hover:bg-gray-100 dark:hover:bg-zinc-800 block"
+          className="py-3 px-2 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-zinc-800 block"
         >
           Kontakt
         </Link>
@@ -503,11 +503,11 @@ const MobileMenu = ({
     </ul>
     <div className="mt-8 flex flex-col gap-2 float-none clear-both">
       <ThemeToggle darkMode={darkMode} setDarkMode={setDarkMode} t={t} />
-      <div className="flex gap-2 mt-2 p-2 border border-black/10 rounded">
+      <div className="flex gap-2 mt-2 p-2 border border-black/10 dark:border-white/10 rounded w-full">
         {languages.map((lang) => (
           <button
             key={lang.code}
-            className={`px-2 py-1 rounded hover:bg-white/20 transition text-xs font-semibold text-white ${
+            className={`px-2 py-1 w-full rounded hover:bg-white/20 transition text-xs font-semibold text-white ${
               i18n.language === lang.code ? "bg-white/20" : ""
             }`}
             onClick={() => i18n.changeLanguage(lang.code)}
