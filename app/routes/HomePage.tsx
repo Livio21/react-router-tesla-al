@@ -194,10 +194,10 @@ export default function HomePage() {
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold dark:text-white mb-4">
               {t("homepage.featuredCars")}
             </h2>
-            <p className="text-gray-300 max-w-2xl mx-auto">
+            <p className="dark:text-gray-300 max-w-2xl mx-auto">
               {t("homepage.featuredCarsDesc")}
             </p>
           </div>
@@ -253,8 +253,7 @@ export default function HomePage() {
               ))}
             </div>
 
-            {/* Navigation Dots */}
-            <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center gap-2">
+            <div className="absolute  hidden bottom-6 left-0 right-0 z-20 lg:flex justify-center gap-2">
               {cars.map((_, index) => (
                 <button
                   key={index}
@@ -300,18 +299,18 @@ export default function HomePage() {
 
   // Test Drive Footer
   const TestDriveFooter = () => (
-    <div className="sticky bottom-0 left-0 right-0 z-30 border-t border-white/10 bg-white/70 dark:bg-black/70 p-3 text-center backdrop-blur-md mt-10">
+    <div className="sticky bottom-0 left-0 right-0 z-30 border-t border-black/10 dark:border-white/10 bg-white/70 dark:bg-black/70 p-3 text-center backdrop-blur-md mt-10">
       <Link
         to="/contact"
-        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white dark:bg-black/80 transition-all transform hover:scale-105 shadow-lg shadow-blue-500/30"
+        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-500 transition-all transform hover:scale-105 active:scale-100 shadow-lg shadow-blue-500/50"
         title={t("requestTestDrive")}
       >
         <img
           src="https://maxus.sa/wp-content/uploads/2024/04/testdrive-icon.png"
           alt=""
-          className="w-6 h-6 dark:invert"
+          className="w-6 h-6 invert"
         />
-        <span className="bg-gradient-to-r from-blue-600 to-cyan-500  hover:from-blue-700 hover:to-cyan-600 text-transparent bg-clip-text font-medium ">
+        <span className="text-white font-medium ">
           {t("requestTestDrive")}
         </span>
       </Link>
@@ -332,9 +331,8 @@ export default function HomePage() {
 
       <HeroSection />
       <CarSlideshow />
-      <span>{t("servicesOffered")}</span>
-      <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+      <div className="text-center mb-12 mx-auto w-full">
+        <h2 className="text-3xl md:text-4xl font-bold dark:text-white mb-4 ">
           {t("homepage.servicesOffered")}
         </h2>
       </div>

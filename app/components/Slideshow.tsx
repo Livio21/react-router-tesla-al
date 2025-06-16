@@ -25,7 +25,6 @@ type Props = {
 export default function SlideShow({ slides, t }: Props) {
   return (
     <div className="relative w-full">
-    
       <Swiper
         modules={[Autoplay, Navigation, Pagination]}
         loop={true}
@@ -57,7 +56,7 @@ export default function SlideShow({ slides, t }: Props) {
                   </h2>
                   <div className="flex gap-2 lg:w-1/2 text-center">
                     <Link
-                      to={`/contact?service=${slide.title}
+                      to={`/contact?service=${slide.title
                         .toLowerCase()
                         .replace(" ", "-")}`}
                       className="flex-1/2 p-2 lg:p-4 rounded-lg bg-white text-black font-bold border border-white/40 hover:bg-white/10 backdrop-blur-2xl hover:text-white transition active:scale-95"
@@ -65,10 +64,8 @@ export default function SlideShow({ slides, t }: Props) {
                       {t("bookService")}
                     </Link>
                     <Link
-                      to={`/info?service=${slide.serviceType
-                        .toLowerCase()
-                        .replace(" ", "-")}`}
-                      className="flex-1/2 p-2 lg:p-4 rounded-lg bg-black text-white font-bold border border-white/40 hover:bg-white/10 backdrop-blur-2xl transition active:scale-95"
+                      to={`/info/service?type=${slide.serviceType?.toLowerCase()}`}
+                      className="px-6 py-3 rounded-lg bg-white/10 text-white font-medium hover:bg-white/20 backdrop-blur-2xl transition-colors"
                     >
                       {t("learnMore")}
                     </Link>

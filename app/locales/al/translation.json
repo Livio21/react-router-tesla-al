@@ -49,7 +49,7 @@
     "from": "Nga",
     "featuredCars":"Makina Tesla",
     "featuredCarsDesc":"Gamë e gjëre modelesh Tesla.",
-    "servicesOffered": "Serviset e ofruara."
+    "servicesOffered": "Sherbime"
   },
   "contact": {
     "title": "Na Kontaktoni",
@@ -105,6 +105,7 @@
   "share": "Ndaj",
   "save": "Ruaj",
   "compare": "Krahaso",
+  "compareDescription":"Krahaso makinat me njera tjetren.",
   "schedule": "Planifiko",
   "viewDetails": "Shiko detajet",
   "callUs": "Na telefononi",
@@ -119,7 +120,8 @@
   "tradeIn": "Shkëmbe makinën",
   "new": "E re",
   "usedCar": "E përdorur",
-  "newVehicle": "Makine e Re",
+  "allCars":"Te gjitha",
+  "newCar": "Makine e Re",
   "usedCarWith": "Makine e përdorur me",
   "withRange": "me autonomi",
   "inventory": "Makina",
@@ -175,8 +177,8 @@
   "addToCompare": "Krahaso",
   "added":"E Shtuar",
   "bookService": "Kontakto",
-  "requestTestDrive": "Provo Makina"
-
+  "requestTestDrive": "Kerko Test Drive",
+  "servicesOffered":" Sherbime"
 }
 
 

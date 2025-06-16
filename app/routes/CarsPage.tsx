@@ -63,7 +63,7 @@ export default function CarsPage() {
     setError(null);
     client
       .fetch<Car[]>(
-        `*[_type == "car"]{ _id,
+        `*[_type == "car"]|order(_createdAt desc){ _id,
         name,
         slug,
         currentPrice,
@@ -272,13 +272,141 @@ export default function CarsPage() {
       <div className="text-center py-10 text-red-500">{t("errorLoading")}</div>
     );
   }
+  const CarCard = ({
+    car,
+    t
+  }: {
+    car: Car;
+    t: any;
+  }) => {
+    const thumb =
+      car.gallery && car.gallery.length > 0
+        ? urlFor(car.gallery[0])
+        : undefined;
+    const euroValue = Number(car.currentPrice.replace(/[^\d]/g, ""));
+    const previousEuroValue = car.previousPrice
+      ? Number(car.previousPrice.replace(/[^\d]/g, ""))
+      : undefined;
+    const onSale = previousEuroValue && previousEuroValue > euroValue;
+    // Fix: Use encodeURIComponent for brand and model in URL
+    const detailsUrl = `/cars/${encodeURIComponent(car.brand.toLowerCase())}/${
+      car.model
+        ? encodeURIComponent(car.model.replace(/\s+/g, "-").toLowerCase())
+        : "unknown"
+    }/${car.slug?.current}`;
+    return (
+      <div
+        className={
+          "relative aspect-[500/400] border border-black/10 dark:border-0 dark:bg-zinc-800 flex flex-col items-center transition  cursor-pointer rounded-lg  " +
+          (car.availability ? "" : "opacity-60 pointer-events-none")
+        }
+        onClick={() => navigate(detailsUrl)}
+        tabIndex={0}
+        role="button"
+        aria-label={t("viewDetailsFor", { car: car.name })}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") navigate(detailsUrl);
+        }}
+      >
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            isInComparison(car._id) ? removeCar(car._id) : addCar(car);
+          }}
+          className={`absolute top-3 right-3 z-10 px-3 py-1 rounded-full text-sm font-medium transition-colors cursor-pointer ${
+            isInComparison(car._id)
+              ? `bg-green-500 text-white hover:bg-red-500 hover:text-red-500 hover:after:content-['Remove'] hover:after:text-white after:absolute after:top-0 after:right-0 after:translate-y-1   after:w-full after:h-full`
+              : "bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700"
+          }`}
+        >
+          {isInComparison(car._id) ? t("added") : t("addToCompare")}
+        </button>
+        {!car.availability && (
+          <span className="absolute top-3 left-3 z-10 px-3 py-1 text-xl rounded bg-red-600 text-white font-bold shadow">
+            {t("sold")}
+          </span>
+        )}
+        {onSale && (
+          <span className="absolute top-3 left-3 z-10 px-3 py-1 text-xl rounded bg-red-500 text-white  font-bold shadow border border-red-700">
+            {t("onSale")}
+          </span>
+        )}
 
+        {thumb ? (
+          <img
+            src={thumb}
+            alt={car.name || "Car thumbnail"}
+            className="object-cover  min-w-full rounded-t-lg hover:brightness-110"
+          />
+        ) : (
+          <div className="w-full h-28 flex items-center justify-center text-gray-400">
+            {t("noImage")}
+          </div>
+        )}
+        <div className="w-full p-5">
+          <div className="flex flex-col gap-1 text-black dark:text-zinc-100">
+            <div className="text-lg font-semibold  group-hover:underline p-1">
+              <span>{car.brand + " " + car.model}</span>
+              <span className="text-sm  ml-4 border border-black/20 dark:border-white/30 rounded p-1">
+                {car.year}
+              </span>
+              {car.new && (
+                <span className="ml-4 text-sm px-3 py-1 rounded bg-blue-500 text-white font-bold shadow border border-blue-700">
+                  {t("new")}
+                </span>
+              )}
+            </div>
+            <div className="flex gap-4 items-center p-1">
+              <span className="font-extrabold text-black dark:text-zinc-100">
+                € {euroValue.toLocaleString()}
+              </span>
+              {onSale && previousEuroValue && (
+                <span className="line-through text-red-500 text-sm font-medium p-1">
+                  € {previousEuroValue.toLocaleString()}
+                </span>
+              )}
+            </div>
+            <span className="p-1">
+              {" "}
+              {car.new
+                ? t("newVehicle")
+                : `${t("usedCarWith")}  ${(
+                    car.mileage ?? 0
+                  ).toLocaleString()} Km`}
+            </span>
+            <span className="p-1">
+              {car.fuelType == "Electric"
+                ? `${car.fuelType} ${t("withRange")} ${car.range ?? 0}Km  `
+                : car.fuelType}
+            </span>
+            <div className="relative group hover:bg-zinc-200 w-fit p-1 rounded-md">
+              <PaintIcon color={car.color ?? ""} />
+              {car.features && car.features.length > 0 && (
+                <div className="absolute left-0 top-full mt-4 z-20 min-w-[180px] bg-white dark:bg-zinc-800 rounded-lg shadow-xl p-3 text-xs text-black dark:text-gray-100 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity">
+                  <ul className="flex gap-1 flex-wrap">
+                    {car.features.map((feature: string, i: number) => (
+                      <li
+                        key={i}
+                        className=" border border-black/20 h-fit min-w-fit p-1 rounded-md"
+                      >
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className=" mx-auto px-4 py-8 dark:text-zinc-200  ">
       <h1 className="text-3xl font-bold p-4">{t("inventory", "Makinat")}</h1>
       <div className="flex flex-col lg:flex-row gap-8">
-        <aside className="w-full lg:w-72 px-4">
+        <aside className="w-full lg:w-72 p-4 dark:bg-white/10 rounded ">
           <button
             className="float-right mb-4 px-4 py-2 rounded bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 text-sm font-medium border border-gray-200 dark:border-zinc-700 transition lg:hidden"
             onClick={() => setFilterOpen((v) => !v)}
@@ -328,7 +456,7 @@ export default function CarsPage() {
                   >
                     <div className="absolute top-1/2 -translate-y-1/2 flex w-full z-50 items-center justify-around px-2 py-1 font-medium">
                       <span className="basis-1/2">{t("newCar")}</span>
-                      <span className="basis-1/2">{t("usedCar")}</span>
+                      <span className="basis-1/2">{t("allCars")}</span>
                     </div>
                     <span
                       className={`absolute top-0 left-0 z-10 p-4 w-1/2 m-1 transform bg-white dark:bg-zinc-700 shadow rounded transition-transform ${
@@ -370,7 +498,7 @@ export default function CarsPage() {
                   </div>
                 </div>
                 <details className="group" open>
-                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80">
+                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80 dark:hover:text-zinc-300 ">
                     {t("brand")}
                     <span className="ml-1 transition-transform rotate-90 duration-200 group-open:-rotate-90">
                       <svg
@@ -417,11 +545,9 @@ export default function CarsPage() {
                   </fieldset>
                 </details>
 
-                {/* Repeat for other filters - same dark mode pattern */}
-                {/* Model */}
 
                 <details className="group">
-                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80">
+                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80 dark:hover:text-zinc-300">
                     {t("model")}
                     <span className="ml-1 transition-transform rotate-90 duration-200 group-open:-rotate-90">
                       <svg
@@ -478,7 +604,7 @@ export default function CarsPage() {
                 </details>
                 {/* Year */}
                 <details className="group">
-                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80">
+                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80 dark:hover:text-zinc-300">
                     {t("year")}
                     <span className="ml-1 transition-transform rotate-90 duration-200 group-open:-rotate-90">
                       <svg
@@ -588,7 +714,7 @@ export default function CarsPage() {
 
                 {/* Fuel */}
                 <details className="group">
-                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80">
+                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80 dark:hover:text-zinc-300">
                     {t("fuelType")}
                     <span className="ml-1 transition-transform rotate-90 duration-200 group-open:-rotate-90">
                       <svg
@@ -637,7 +763,7 @@ export default function CarsPage() {
 
                 {/* Transmission */}
                 <details className="group">
-                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80">
+                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80 dark:hover:text-zinc-300">
                     {t("transmission")}
                     <span className="ml-1 transition-transform rotate-90 duration-200 group-open:-rotate-90">
                       <svg
@@ -688,7 +814,7 @@ export default function CarsPage() {
 
                 {/* Body Type */}
                 <details className="group">
-                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80">
+                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80 dark:hover:text-zinc-300">
                     {t("bodyType")}
                     <span className="ml-1 transition-transform rotate-90 duration-200 group-open:-rotate-90">
                       <svg
@@ -737,7 +863,7 @@ export default function CarsPage() {
 
                 {/* Color */}
                 <details className="group">
-                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80">
+                  <summary className="font-bold mb-4 flex items-center justify-between gap-2 cursor-pointer hover:text-black/80 dark:hover:text-zinc-300">
                     {t("paint")}
                     <span className="ml-1 transition-transform rotate-90 duration-200 group-open:-rotate-90">
                       <svg
@@ -846,139 +972,15 @@ export default function CarsPage() {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {filteredCars.length > 0 ?  filteredCars.map((car, idx) => {
-              const thumb =
-                car.gallery && car.gallery.length > 0
-                  ? urlFor(car.gallery[0])
-                  : undefined;
-              const euroValue = Number(car.currentPrice.replace(/[^\d]/g, ""));
-              const previousEuroValue = car.previousPrice
-                ? Number(car.previousPrice.replace(/[^\d]/g, ""))
-                : undefined;
-              const onSale = previousEuroValue && previousEuroValue > euroValue;
-              // Fix: Use encodeURIComponent for brand and model in URL
-              const detailsUrl = `/cars/${encodeURIComponent(
-                car.brand.toLowerCase()
-              )}/${
-                car.model
-                  ? encodeURIComponent(
-                      car.model.replace(/\s+/g, "-").toLowerCase()
-                    )
-                  : "unknown"
-              }/${car.slug?.current}`;
-              return (
-                <div
-                  className={
-                    "relative aspect-[500/450] bg-white dark:bg-inherit flex flex-col items-center transition  border border-black/20 dark:border-white/20 cursor-pointer rounded-lg  " +
-                    (car.availability ? "" : "opacity-60 pointer-events-none")
-                  }
-                  onClick={() => navigate(detailsUrl)}
-                  tabIndex={0}
-                  role="button"
-                  aria-label={t("viewDetailsFor", { car: car.name })}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ")
-                      navigate(detailsUrl);
-                  }}
-                >
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      isInComparison(car._id) ? removeCar(car._id) : addCar(car);
-                    }}
-                    className={`absolute top-3 right-3 z-10 px-3 py-1 rounded-full text-sm font-medium transition-colors cursor-pointer ${
-                      isInComparison(car._id)
-                        ? `bg-green-500 text-white hover:bg-red-500 hover:text-red-500 hover:after:content-['Remove'] hover:after:text-white after:absolute after:top-0 after:right-0 after:translate-y-1   after:w-full after:h-full`
-                        : "bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700"
-                    }`}
-                  >
-                    {isInComparison(car._id) ? t("added") : t("addToCompare")}
-                  </button>
-                  {!car.availability && (
-                    <span className="absolute top-3 left-3 z-10 px-3 py-1 text-xl rounded bg-red-600 text-white font-bold shadow">
-                      {t("sold")}
-                    </span>
-                  )}
-                  {onSale && (
-                    <span className="absolute top-3 left-3 z-10 px-3 py-1 text-xl rounded bg-red-500 text-white  font-bold shadow border border-red-700">
-                      {t("onSale")}
-                    </span>
-                  )}
-                  {car.new && (
-                    <span className="absolute top-3 left-3 z-10 px-3 py-1 text-xl rounded bg-blue-500 text-white font-bold shadow border border-blue-700">
-                      {t("new")}
-                    </span>
-                  )}
-                  {thumb ? (
-                    <img
-                      src={thumb}
-                      alt={car.name || "Car thumbnail"}
-                      className="object-cover h-2/3 min-w-full rounded-t-lg hover:brightness-110"
-                    />
-                  ) : (
-                    <div className="w-full h-28 flex items-center justify-center text-gray-400">
-                      {t("noImage")}
-                    </div>
-                  )}
-                  <div className="w-full p-5">
-                    <div className="flex flex-col gap-1 text-black dark:text-zinc-100">
-                      <div className="text-lg font-semibold  group-hover:underline p-1">
-                        <span>{car.brand + " " + car.model}</span>
-                        <span className="text-sm  ml-4 border border-black/20 dark:border-white/30 rounded p-1">
-                          {car.year}
-                        </span>
-                      </div>
-                      <div className="flex gap-4 items-center p-1">
-                        <span className="font-extrabold text-black dark:text-zinc-100">
-                          € {euroValue.toLocaleString()}
-                        </span>
-                        {onSale && previousEuroValue && (
-                          <span className="line-through text-red-500 text-sm font-medium p-1">
-                            € {previousEuroValue.toLocaleString()}
-                          </span>
-                        )}
-                      </div>
-                      <span className="p-1">
-                        {" "}
-                        {car.new
-                          ? t("newVehicle")
-                          : `${t("usedCarWith")}  ${(
-                              car.mileage ?? 0
-                            ).toLocaleString()} Km`}
-                      </span>
-                      <span className="p-1">
-                        {car.fuelType == "Electric"
-                          ? `${car.fuelType} ${t("withRange")} ${
-                              car.range ?? 0
-                            }Km  `
-                          : car.fuelType}
-                      </span>
-                      <div className="relative group hover:bg-zinc-200 w-fit p-1 rounded-md">
-                        <PaintIcon color={car.color ?? ""} />
-                        {car.features && car.features.length > 0 && (
-                          <div className="absolute left-0 top-full mt-4 z-20 min-w-[180px] bg-white dark:bg-zinc-800 rounded-lg shadow-xl p-3 text-xs text-black dark:text-gray-100 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity">
-                            <ul className="flex gap-1 flex-wrap">
-                              {car.features.map(
-                                (feature: string, i: number) => (
-                                  <li
-                                    key={i}
-                                    className=" border border-black/20 h-fit min-w-fit p-1 rounded-md"
-                                  >
-                                    {feature}
-                                  </li>
-                                )
-                              )}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            }): (<div className="text-center text-lg font-bold">
-              {t("noCarsAvailable")} ☹️
-            </div>)}
+            {filteredCars.length > 0 ? (
+              filteredCars.map((car, idx) => (
+                <CarCard key={idx} car={car} t={t} />
+              ))
+            ) : (
+              <div className="text-center text-lg font-bold">
+                {t("noCarsAvailable")} ☹️
+              </div>
+            )}
           </div>
         </main>
       </div>

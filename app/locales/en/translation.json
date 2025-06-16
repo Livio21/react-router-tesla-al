@@ -46,7 +46,10 @@
     "supportDesc": "Consulting and help for every step of buying or selling your car.",
     "notSure": "Not sure which car to choose?",
     "contactForAdvice": "Contact us for free advice.",
-    "from": "From"
+    "from": "From",
+    "featuredCars":"Makina Tesla",
+    "featuredCarsDesc":"Gamë e gjëre modelesh Tesla.",
+    "servicesOffered": "Sherbime"
   },
   "contact": {
     "title": "Contact Us",

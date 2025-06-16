@@ -88,8 +88,7 @@ export default function ComparePage() {
   }
 
   const CarCard = ({ car, onRemove }: { car: Car; onRemove?: () => void }) => (
-    <div className="relative bg-white dark:bg-zinc-800 rounded-2xl shadow-md border border-gray-200 dark:border-zinc-700 flex flex-col max-w-[300px]">
-      {/* Remove button */}
+    <div className="relative bg-white dark:bg-zinc-800 rounded-2xl shadow-md border border-gray-200 dark:border-zinc-700 flex flex-col min-w-[300px] max-w-[300px]">
       {onRemove && (
         <button
           onClick={onRemove}
@@ -99,7 +98,6 @@ export default function ComparePage() {
           ×
         </button>
       )}
-      {/* Car image */}
       <div className="w-full flex items-center justify-center overflow-hidden rounded-t-2xl bg-white dark:bg-zinc-800">
         <img
           src={urlFor(car.gallery?.[0])}
@@ -107,7 +105,6 @@ export default function ComparePage() {
           className="object-cover w-full h-full"
         />
       </div>
-      {/* Car info */}
       <div className="flex-1 flex flex-col gap-2 p-6 pb-4">
         <Link
           to={`/cars/${encodeURIComponent(car.brand)}/${encodeURIComponent(
@@ -131,7 +128,7 @@ export default function ComparePage() {
   );
 
   const AddCarCard = ({ onAdd }: { onAdd?: () => void }) => (
-    <Link to="/cars" className="relative border  border-gray-300 dark:border-zinc-700 rounded-lg min-h-[420px] bg-gray-50 dark:bg-zinc-900 w-full max-w-[300px]">
+    <Link to="/cars" className="relative border  border-gray-300 dark:border-zinc-700 rounded-lg min-h-[420px] bg-gray-50 dark:bg-zinc-900 w-full min-w-[300px] max-w-[300px]">
       <div className="absolute inset-0 flex items-center justify-center z-10 backdrop-blur-sm rounded-lg">
         <button
           onClick={onAdd}
@@ -161,14 +158,18 @@ export default function ComparePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-white dark:bg-zinc-900">
+    <div className="container mx-auto px-4 py-8 bg-white dark:bg-zinc-900 ">
       <div className="flex flex-col gap-4 mb-6">
         <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold dark:text-zinc-100">{t("compare")}</h1>
+          <h1 className="text-2xl font-bold dark:text-zinc-100">
+            {t("compare")}
+          </h1>
         </div>
-        <p className="text-sm text-gray-500 dark:text-zinc-400">{t("compareDescription")}</p>
+        <p className="text-sm text-gray-500 dark:text-zinc-400">
+          {t("compareDescription")}
+        </p>
       </div>
-      <div className="flex gap-4 mb-8 p-1">
+      <div className="cars-container flex gap-4 mb-8 p-1 scrollbar-hide overflow-x-auto ">
         {cars.map((car) => (
           <CarCard
             key={car._id}
@@ -180,19 +181,9 @@ export default function ComparePage() {
         ))}
         {cars.length < 5 && <AddCarCard />}
       </div>
-      <label className="flex items-center gap-2 cursor-pointer select-none p-4">
-        <span className="text-sm font-medium dark:text-zinc-100">
-          {t("hideSimilarities", "Hide similarities")}
-        </span>
-        <input
-          type="checkbox"
-          checked={hideSimilar}
-          onChange={() => setHideSimilar((v) => !v)}
-          className="accent-black w-5 h-5"
-        />
-      </label>
+    
       <div className="bg-white dark:bg-zinc-900 p-1">
-        {SPEC_SECTIONS.map((section,index) => {
+        {SPEC_SECTIONS.map((section, index) => {
           const visibleSpecs = hideSimilar
             ? section.specs.filter((spec) => !isSimilar(spec.key))
             : section.specs;
@@ -217,10 +208,10 @@ export default function ComparePage() {
                   </svg>
                 </span>
               </summary>
-              <div className="flex gap-4 w-full">
+              <div className="flex gap-4 w-full overflow-x-auto">
                 {cars.map((car) => {
                   return (
-                    <div className="relative flex flex-col gap-2 w-full max-w-[300px]">
+                    <div className="relative flex flex-col gap-2 w-full min-w-[300px] max-w-[300px] ">
                       {visibleSpecs.map((spec) => (
                         <div
                           key={spec.key}

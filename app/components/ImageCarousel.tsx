@@ -60,14 +60,14 @@ export default function ImageCarousel({
           {/* Navigation Arrows */}
           <button
             onClick={goToPrev}
-            className="absolute top-1/2 left-0 -translate-y-1/2 bg-white/80 px-4 py-2 rounded m-2 hover:bg-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="absolute top-1/2 left-0 -translate-y-1/2 bg-white/80 dark:bg-zinc-900/80 px-4 py-2 rounded m-2 hover:bg-gray-200 dark:hover:bg-zinc-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             aria-label="Previous image"
           >
             ‹
           </button>
           <button
             onClick={goToNext}
-            className="absolute top-1/2 right-0 -translate-y-1/2 bg-white/80 px-4 py-2 rounded m-2 hover:bg-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="absolute top-1/2 right-0 -translate-y-1/2 bg-white/80 dark:bg-zinc-900/80 px-4 py-2 rounded m-2 hover:bg-gray-200 dark:hover:bg-zinc-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             aria-label="Next image"
           >
             ›
@@ -90,7 +90,7 @@ export default function ImageCarousel({
                 onClick={() => setCurrent(idx)}
                 className={`w-2 h-2 rounded-full transition-all ${
                   current === idx
-                    ? "bg-white scale-125"
+                    ? "bg-white  scale-125"
                     : "bg-white/50 hover:bg-white/80"
                 }`}
                 aria-label={`Go to image ${idx + 1}`}
