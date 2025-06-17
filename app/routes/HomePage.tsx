@@ -301,7 +301,7 @@ export default function HomePage() {
   const TestDriveFooter = () => (
     <div className="sticky bottom-0 left-0 right-0 z-30 border-t border-black/10 dark:border-white/10 bg-white/70 dark:bg-black/70 p-3 text-center backdrop-blur-md mt-10">
       <Link
-        to="/contact"
+        to="/test-drive"
         className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-500 transition-all transform hover:scale-105 active:scale-100 shadow-lg shadow-blue-500/50"
         title={t("requestTestDrive")}
       >

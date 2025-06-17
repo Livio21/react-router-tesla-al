@@ -1,22 +1,33 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
-@import 'swiper/css';
-@import 'swiper/css/navigation';
-@import 'swiper/css/pagination';
-
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+@font-face {
+  font-family: "Universal Sans";
+  src: url("path/to/UniversalSans-450.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 450;
+}
+@font-face {
+  font-family: "Universal Sans";
+  src: url("path/to/UniversalSans-450Italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 450;
+}
 
 @layer base {
   :root {
     --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif,
       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
       "Noto Color Emoji";
-    scrollbar-width:none;
-    &::-webkit-scrollbar{
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
       display: none;
     }
+   
   }
-
 }
 @utility scrollbar-hide {
   @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
@@ -25,6 +36,6 @@
 @theme {
   --font-manrope: "Manrope", sans-serif;
   --font-montserrat: "Montserrat", sans-serif;
+  --font-universal-sans: "Universal Sans", sans-serif;
 }
-
 
