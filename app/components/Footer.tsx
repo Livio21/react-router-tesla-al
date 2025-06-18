@@ -16,7 +16,7 @@ export default function Footer() {
               to="/"
               className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100"
             >
-              Permakinat.al
+              {t("homepage.title")}
             </Link>
             <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400 max-w-xs text-center md:text-left">
               {t("footer.disclaimer")}
@@ -73,7 +73,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="ml-1 font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors flex items-center group"
               >
-                Livio Macaj
+                Livio 
               </a>
             </div>
           </div>

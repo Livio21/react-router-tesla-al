@@ -5,8 +5,9 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLocation
+  useLocation,
 } from "react-router";
+import { BrowserRouter as Router } from "react-router";
 import { useState, useEffect } from "react";
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -16,8 +17,8 @@ import { HeaderHoverContext } from "./components/Header";
 import { AnimatePresence, motion } from "framer-motion";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
-import { ComparisonProvider } from './context/ComparisonContext';
-import ComparisonBar from './components/ComparisonBar';
+import { ComparisonProvider } from "./context/ComparisonContext";
+import ComparisonBar from "./components/ComparisonBar";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -35,7 +36,6 @@ export const links: Route.LinksFunction = () => [
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const [headerHovered, setHeaderHovered] = useState(false);
-  const hideFooter = /^\/cars\/[^/]+\/[^/]+\/[^/]+$/.test(location.pathname);
   return (
     <>
       <html lang="en">
@@ -73,17 +73,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   >
                     {children}
                   </div>
-                  {!hideFooter && (
-                    <div
-                      className={
-                        headerHovered
-                          ? "filter blur-xs pointer-events-none select-none transition-all duration-200"
-                          : ""
-                      }
-                    >
-                      <Footer />
-                    </div>
-                  )}
+                  <div
+                    className={
+                      headerHovered
+                        ? "filter blur-xs pointer-events-none select-none transition-all duration-200"
+                        : ""
+                    }
+                  >
+                    <Footer />
+                  </div>
                 </main>
               </ComparisonProvider>
             </I18nextProvider>
@@ -139,7 +137,6 @@ export default function App() {
           transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
           className=""
         >
-          
           <Outlet />
         </motion.div>
       </AnimatePresence>

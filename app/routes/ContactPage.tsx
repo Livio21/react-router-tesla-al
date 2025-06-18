@@ -23,7 +23,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="flex flex-col items-center py-16 px-4 min-h-[calc(100vh-64px)] bg-white dark:bg-zinc-900 dark:text-zinc-200">
+    <main className=" py-16 px-4 min-h-[calc(100vh-64px)] bg-white dark:bg-zinc-900 dark:text-zinc-200">
       <div className="max-w-6xl w-full mx-auto">
         <h1 className="text-4xl font-bold text-center mb-12 ">{t("contact.title", "Contact Us")}</h1>
         

@@ -150,7 +150,7 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto animate-fade-in-up">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 tracking-tight">
             <span className="bg-clip-text text-transparent bg-white/80 font-[]">
-              Permakinat.al
+              {t("homepage.title")}
             </span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">

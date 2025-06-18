@@ -272,35 +272,172 @@ export default function CarsPage() {
       <div className="text-center py-10 text-red-500">{t("errorLoading")}</div>
     );
   }
-  const CarCard = ({
-    car,
-    t
-  }: {
-    car: Car;
-    t: any;
-  }) => {
-    const thumb =
-      car.gallery && car.gallery.length > 0
-        ? urlFor(car.gallery[0])
-        : undefined;
+  // const CarCard = ({
+  //   car,
+  //   t
+  // }: {
+  //   car: Car;
+  //   t: any;
+  // }) => {
+  //   const thumb =
+  //     car.gallery && car.gallery.length > 0
+  //       ? urlFor(car.gallery[0])
+  //       : undefined;
+  //   const euroValue = Number(car.currentPrice.replace(/[^\d]/g, ""));
+  //   const previousEuroValue = car.previousPrice
+  //     ? Number(car.previousPrice.replace(/[^\d]/g, ""))
+  //     : undefined;
+  //   const onSale = previousEuroValue && previousEuroValue > euroValue;
+  //   // Fix: Use encodeURIComponent for brand and model in URL
+  //   const detailsUrl = `/cars/${encodeURIComponent(car.brand.toLowerCase())}/${
+  //     car.model
+  //       ? encodeURIComponent(car.model.replace(/\s+/g, "-").toLowerCase())
+  //       : "unknown"
+  //   }/${car.slug?.current}`;
+  //   return (
+  //     <div
+  //       className={
+  //         "relative aspect-[500/400] border border-black/10 dark:border-0 dark:bg-zinc-800 flex flex-col items-center transition  cursor-pointer rounded-lg  " +
+  //         (car.availability ? "" : "opacity-60 pointer-events-none")
+  //       }
+  //       onClick={() => navigate(detailsUrl)}
+  //       tabIndex={0}
+  //       role="button"
+  //       aria-label={t("viewDetailsFor", { car: car.name })}
+  //       onKeyDown={(e) => {
+  //         if (e.key === "Enter" || e.key === " ") navigate(detailsUrl);
+  //       }}
+  //     >
+  //       <button
+  //         onClick={(e) => {
+  //           e.stopPropagation();
+  //           isInComparison(car._id) ? removeCar(car._id) : addCar(car);
+  //         }}
+  //         className={`absolute top-3 right-3 z-10 px-3 py-1 rounded-full text-sm font-medium transition-colors cursor-pointer ${
+  //           isInComparison(car._id)
+  //             ? `bg-green-500 text-white hover:bg-red-500 hover:text-red-500 hover:after:content-['Remove'] hover:after:text-white after:absolute after:top-0 after:right-0 after:translate-y-1   after:w-full after:h-full`
+  //             : "bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700"
+  //         }`}
+  //       >
+  //         {isInComparison(car._id) ? t("added") : t("addToCompare")}
+  //       </button>
+  //       {!car.availability && (
+  //         <span className="absolute top-3 left-3 z-10 px-3 py-1 text-xl rounded bg-red-600 text-white font-bold shadow">
+  //           {t("sold")}
+  //         </span>
+  //       )}
+  //       {onSale && (
+  //         <span className="absolute top-3 left-3 z-10 px-3 py-1 text-xl rounded bg-red-500 text-white  font-bold shadow border border-red-700">
+  //           {t("onSale")}
+  //         </span>
+  //       )}
+
+  //       {thumb ? (
+  //         <img
+  //           src={thumb}
+  //           alt={car.name || "Car thumbnail"}
+  //           className="object-cover  min-w-full rounded-t-lg hover:brightness-110"
+  //         />
+  //       ) : (
+  //         <div className="w-full h-28 flex items-center justify-center text-gray-400">
+  //           {t("noImage")}
+  //         </div>
+  //       )}
+  //       <div className="w-full p-5">
+  //         <div className="flex flex-col gap-1 text-black dark:text-zinc-100">
+  //           <div className="text-lg font-semibold  group-hover:underline p-1">
+  //             <span>{car.brand + " " + car.model}</span>
+  //             <span className="text-sm  ml-4 border border-black/20 dark:border-white/30 rounded p-1">
+  //               {car.year}
+  //             </span>
+  //             {car.new && (
+  //               <span className="ml-4 text-sm px-3 py-1 rounded bg-blue-500 text-white font-bold shadow border border-blue-700">
+  //                 {t("new")}
+  //               </span>
+  //             )}
+  //           </div>
+  //           <div className="flex gap-4 items-center p-1">
+  //             <span className="font-extrabold text-black dark:text-zinc-100">
+  //               € {euroValue.toLocaleString()}
+  //             </span>
+  //             {onSale && previousEuroValue && (
+  //               <span className="line-through text-red-500 text-sm font-medium p-1">
+  //                 € {previousEuroValue.toLocaleString()}
+  //               </span>
+  //             )}
+  //           </div>
+  //           <span className="p-1">
+  //             {" "}
+  //             {car.new
+  //               ? t("newVehicle")
+  //               : `${t("usedCarWith")}  ${(
+  //                   car.mileage ?? 0
+  //                 ).toLocaleString()} Km`}
+  //           </span>
+  //           <span className="p-1">
+  //             {car.fuelType == "Electric"
+  //               ? `${car.fuelType} ${t("withRange")} ${car.range ?? 0}Km  `
+  //               : car.fuelType}
+  //           </span>
+  //           <div className="relative group hover:bg-zinc-200 w-fit p-1 rounded-md">
+  //             <PaintIcon color={car.color ?? ""} />
+  //             {car.features && car.features.length > 0 && (
+  //               <div className="absolute left-0 top-full mt-4 z-20 min-w-[180px] bg-white dark:bg-zinc-800 rounded-lg shadow-xl p-3 text-xs text-black dark:text-gray-100 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity">
+  //                 <ul className="flex gap-1 flex-wrap">
+  //                   {car.features.map((feature: string, i: number) => (
+  //                     <li
+  //                       key={i}
+  //                       className=" border border-black/20 h-fit min-w-fit p-1 rounded-md"
+  //                     >
+  //                       {feature}
+  //                     </li>
+  //                   ))}
+  //                 </ul>
+  //               </div>
+  //             )}
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // };
+  const CarCard = ({ car, t }: { car: Car; t: any }) => {
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
+
+    // Image rotation effect
+    useEffect(() => {
+      if (!car.gallery || car.gallery.length <= 1 || isHovered) return;
+
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % (car.gallery?.length || 1));
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }, [car.gallery, isHovered]);
+
+    const currentImage = car.gallery?.[currentImageIndex]
+      ? urlFor(car.gallery[currentImageIndex])
+      : undefined;
+
     const euroValue = Number(car.currentPrice.replace(/[^\d]/g, ""));
     const previousEuroValue = car.previousPrice
       ? Number(car.previousPrice.replace(/[^\d]/g, ""))
       : undefined;
     const onSale = previousEuroValue && previousEuroValue > euroValue;
-    // Fix: Use encodeURIComponent for brand and model in URL
+
     const detailsUrl = `/cars/${encodeURIComponent(car.brand.toLowerCase())}/${
       car.model
         ? encodeURIComponent(car.model.replace(/\s+/g, "-").toLowerCase())
         : "unknown"
     }/${car.slug?.current}`;
+
     return (
       <div
-        className={
-          "relative aspect-[500/400] border border-black/10 dark:border-0 dark:bg-zinc-800 flex flex-col items-center transition  cursor-pointer rounded-lg  " +
-          (car.availability ? "" : "opacity-60 pointer-events-none")
-        }
+        className="relative aspect-[16/10] rounded-xl overflow-hidden shadow-lg cursor-pointer group transition-all duration-300 transform hover:scale-[1.02]"
         onClick={() => navigate(detailsUrl)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         tabIndex={0}
         role="button"
         aria-label={t("viewDetailsFor", { car: car.name })}
@@ -308,100 +445,110 @@ export default function CarsPage() {
           if (e.key === "Enter" || e.key === " ") navigate(detailsUrl);
         }}
       >
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            isInComparison(car._id) ? removeCar(car._id) : addCar(car);
-          }}
-          className={`absolute top-3 right-3 z-10 px-3 py-1 rounded-full text-sm font-medium transition-colors cursor-pointer ${
-            isInComparison(car._id)
-              ? `bg-green-500 text-white hover:bg-red-500 hover:text-red-500 hover:after:content-['Remove'] hover:after:text-white after:absolute after:top-0 after:right-0 after:translate-y-1   after:w-full after:h-full`
-              : "bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700"
-          }`}
-        >
-          {isInComparison(car._id) ? t("added") : t("addToCompare")}
-        </button>
-        {!car.availability && (
-          <span className="absolute top-3 left-3 z-10 px-3 py-1 text-xl rounded bg-red-600 text-white font-bold shadow">
-            {t("sold")}
-          </span>
-        )}
-        {onSale && (
-          <span className="absolute top-3 left-3 z-10 px-3 py-1 text-xl rounded bg-red-500 text-white  font-bold shadow border border-red-700">
-            {t("onSale")}
-          </span>
-        )}
+        {/* Background image with transition effect */}
+        <div className="absolute inset-0">
+          {currentImage ? (
+            <img
+              src={currentImage}
+              alt={car.name || "Car image"}
+              className="w-full h-full object-cover "
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-gray-900 to-gray-700 flex items-center justify-center">
+              <span className="text-gray-400">{t("noImage")}</span>
+            </div>
+          )}
 
-        {thumb ? (
-          <img
-            src={thumb}
-            alt={car.name || "Car thumbnail"}
-            className="object-cover  min-w-full rounded-t-lg hover:brightness-110"
-          />
-        ) : (
-          <div className="w-full h-28 flex items-center justify-center text-gray-400">
-            {t("noImage")}
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+          {/* Blur effect at bottom */}
+          <div className="absolute bottom-0 left-0 right-0 h-2/5 bg-black/20 backdrop-blur-sm" />
+        </div>
+
+        {/* Top action buttons */}
+        <div className="absolute top-4 right-4 z-10 flex gap-2">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              isInComparison(car._id) ? removeCar(car._id) : addCar(car);
+            }}
+            className={`px-3 py-2 rounded-full text-sm font-medium transition-all backdrop-blur-sm ${
+              isInComparison(car._id)
+                ? "bg-green-500/90 text-white shadow-lg"
+                : "bg-white/80 text-gray-800 hover:bg-white"
+            }`}
+          >
+            {isInComparison(car._id) ? t("added") : t("addToCompare")}
+          </button>
+        </div>
+
+        {/* Status badges */}
+        <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
+          {!car.availability && (
+            <span className="px-3 py-1 text-sm rounded-full bg-red-600 text-white font-bold shadow-md">
+              {t("sold")}
+            </span>
+          )}
+          {onSale && (
+            <span className="px-3 py-1 text-sm rounded-full bg-red-500 text-white font-bold shadow-md">
+              {t("onSale")}
+            </span>
+          )}
+        </div>
+
+        {/* Bottom content overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-5 text-white z-10">
+          <div className="flex justify-between items-start">
+            <div>
+              <h3 className="text-xl font-bold flex items-center gap-2">
+                {car.brand} {car.model}
+                {car.new && (
+                  <span className="text-xs px-2 py-1 rounded-full bg-blue-500 text-white font-bold">
+                    {t("new")}
+                  </span>
+                )}
+              </h3>
+
+              <div className="mt-1 flex items-center gap-3">
+                <span className="text-lg font-bold">
+                  € {euroValue.toLocaleString()}
+                </span>
+                {onSale && previousEuroValue && (
+                  <span className="line-through text-gray-300 text-sm">
+                    € {previousEuroValue.toLocaleString()}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <span className="bg-black/30 px-2 py-1 rounded-md text-sm backdrop-blur-sm">
+              {car.year}
+            </span>
           </div>
-        )}
-        <div className="w-full p-5">
-          <div className="flex flex-col gap-1 text-black dark:text-zinc-100">
-            <div className="text-lg font-semibold  group-hover:underline p-1">
-              <span>{car.brand + " " + car.model}</span>
-              <span className="text-sm  ml-4 border border-black/20 dark:border-white/30 rounded p-1">
-                {car.year}
-              </span>
-              {car.new && (
-                <span className="ml-4 text-sm px-3 py-1 rounded bg-blue-500 text-white font-bold shadow border border-blue-700">
-                  {t("new")}
-                </span>
-              )}
-            </div>
-            <div className="flex gap-4 items-center p-1">
-              <span className="font-extrabold text-black dark:text-zinc-100">
-                € {euroValue.toLocaleString()}
-              </span>
-              {onSale && previousEuroValue && (
-                <span className="line-through text-red-500 text-sm font-medium p-1">
-                  € {previousEuroValue.toLocaleString()}
-                </span>
-              )}
-            </div>
-            <span className="p-1">
-              {" "}
+
+          <div className="mt-3 text-sm flex flex-wrap gap-2">
+            <span className="bg-black/30 px-2 py-1 rounded-md backdrop-blur-sm">
               {car.new
                 ? t("newVehicle")
-                : `${t("usedCarWith")}  ${(
+                : `${t("usedCarWith")} ${(
                     car.mileage ?? 0
                   ).toLocaleString()} Km`}
             </span>
-            <span className="p-1">
-              {car.fuelType == "Electric"
-                ? `${car.fuelType} ${t("withRange")} ${car.range ?? 0}Km  `
+
+            <span className="bg-black/30 px-2 py-1 rounded-md backdrop-blur-sm">
+              {car.fuelType === "Electric"
+                ? `${t("range")}: ${car.range ?? 0} Km`
                 : car.fuelType}
             </span>
-            <div className="relative group hover:bg-zinc-200 w-fit p-1 rounded-md">
-              <PaintIcon color={car.color ?? ""} />
-              {car.features && car.features.length > 0 && (
-                <div className="absolute left-0 top-full mt-4 z-20 min-w-[180px] bg-white dark:bg-zinc-800 rounded-lg shadow-xl p-3 text-xs text-black dark:text-gray-100 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity">
-                  <ul className="flex gap-1 flex-wrap">
-                    {car.features.map((feature: string, i: number) => (
-                      <li
-                        key={i}
-                        className=" border border-black/20 h-fit min-w-fit p-1 rounded-md"
-                      >
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
           </div>
         </div>
+
+        {/* Hover indicator */}
+        <div className="absolute inset-0 border-2 border-transparent group-hover:border-white/50 transition-all duration-300 rounded-xl pointer-events-none" />
       </div>
     );
   };
-
   return (
     <div className=" mx-auto px-4 py-8 dark:text-zinc-200  ">
       <h1 className="text-3xl font-bold p-4">{t("inventory", "Makinat")}</h1>

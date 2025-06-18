@@ -578,7 +578,7 @@ export default function Header() {
             to="/"
             className="text-xl font-bold tracking-tight text-gray-900 dark:text-white hover:opacity-80 transition p-2 rounded-lg hover:scale-105 active:scale-95"
           >
-            Permakinat.al
+            {t("homepage.title")}
           </Link>
         </div>
 

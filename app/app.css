@@ -39,3 +39,22 @@
   --font-universal-sans: "Universal Sans", sans-serif;
 }
 
+.slides {
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.slide {
+  scroll-snap-align: start;
+  min-width: 540px;
+  max-width: 540px;
+}
+
+/* Highlight the active dot using pure CSS */
+#slide-0:checked ~ .nav-dots label[for="slide-0"],
+#slide-1:checked ~ .nav-dots label[for="slide-1"],
+#slide-2:checked ~ .nav-dots label[for="slide-2"],
+#slide-3:checked ~ .nav-dots label[for="slide-3"] {
+  background-color: #27272a; /* Tailwind's zinc-800 */
+  opacity: 1;
+}
