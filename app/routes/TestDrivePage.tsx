@@ -39,13 +39,13 @@ const Model3 = memo(function Model3() {
       <group position={[0, 0.5, 1]}>
         <Line
           points={[
-            [0, 0.7, 0],
-            [0, 1.4, 0],
+            [0, 0.9, -1],
+            [0, 1.4, -0.9],
           ]}
           color="black"
           lineWidth={1}
         />
-        <Html position={[0, 2, 0]} style={{ color: "black", fontSize: "12px" }}>
+        <Html position={[0.2, 1.7, -0.9]} style={{ color: "black", fontSize: "12px" }}>
           <div className="p-4">
             <span className="text-lg text-zinc-600">Model 3</span>
           </div>
@@ -169,8 +169,30 @@ function TripsCard() {
 }
 
 function MusicCard() {
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [shuffle, setShuffle] = useState(false);
+  const [repeat, setRepeat] = useState(false);
+  const [progress, setProgress] = useState(0.1); // 0 to 1
+  const progressBarRef = useRef<HTMLDivElement>(null);
+
+  // Simulate progress for demo
+  useEffect(() => {
+    if (!isPlaying) return;
+    const interval = setInterval(() => {
+      setProgress((p) => (p >= 1 ? 0 : p + 0.01));
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [isPlaying]);
+
+  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!progressBarRef.current) return;
+    const rect = progressBarRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    setProgress(Math.max(0, Math.min(1, x / rect.width)));
+  };
+
   return (
-    <div className="grid grid-flow-row grid-rows-[1fr_0.1fr_1fr] text-gray-700 dark:text-gray-200 bg-slate-50 dark:bg-zinc-900 h-full w-full min-w-[220px] max-h-[140px] snap-center transition-colors duration-300 rounded-lg drop-shadow-lg text-xs flex-1">
+    <div className="grid grid-flow-row grid-rows-[1fr_0.1fr_1fr] text-gray-700 dark:text-gray-200 bg-slate-50 dark:bg-zinc-900 h-full w-full min-w-[220px] max-h-[140px] snap-center transition-colors duration-300 rounded-lg drop-shadow-lg text-xs flex-1 select-none">
       <div className="grid grid-rows-1 grid-cols-[0.3fr_1fr_0.2fr_0.2fr] items-center w-full gap-3">
         <img
           src="/Cybertruck.jpg"
@@ -181,31 +203,59 @@ function MusicCard() {
           <span className="font-semibold text-sm truncate">Song Title</span>
           <span className="text-gray-500 dark:text-gray-400 text-xs truncate">Artist - Album</span>
         </div>
-        <span className="material-symbols-outlined">shuffle</span>
-        <span className="material-symbols-outlined">laps</span>
+        <button
+          className={`material-symbols-outlined transition-colors ${shuffle ? 'text-blue-500' : ''}`}
+          onClick={() => setShuffle((s) => !s)}
+          aria-label="Shuffle"
+        >
+          shuffle
+        </button>
+        <button
+          className={`material-symbols-outlined transition-colors ${repeat ? 'text-blue-500' : ''}`}
+          onClick={() => setRepeat((r) => !r)}
+          aria-label="Repeat"
+        >
+          laps
+        </button>
       </div>
-      <div className="relative w-full h-[2px] bg-white/80 dark:bg-zinc-700">
-        <div className="absolute top-1/2 -translate-y-1/2 translate-x-[50px] w-[8px] h-[8px] rounded-full bg-zinc-400 dark:bg-zinc-500"></div>
+      <div
+        className="relative w-full h-[2px] bg-white/80 dark:bg-zinc-700 cursor-pointer"
+        ref={progressBarRef}
+        onClick={handleProgressClick}
+        aria-label="Seek bar"
+      >
+        <div
+          className="absolute top-1/2 -translate-y-1/2 h-[8px] rounded-full bg-zinc-400 dark:bg-zinc-500 transition-all"
+          style={{ left: `calc(${progress * 100}% - 4px)`, width: 8, pointerEvents: 'none' }}
+        ></div>
+        <div
+          className="absolute top-0 left-0 h-full bg-blue-400/60 dark:bg-blue-500/60 rounded"
+          style={{ width: `${progress * 100}%` }}
+        ></div>
       </div>
       <div className="flex items-center justify-between w-full h-full flex-1">
-        <span className="material-symbols-outlined flex-1 text-center">
+        <button className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors" aria-label="Previous">
           skip_previous
-        </span>
-        <span className="material-symbols-outlined flex-1 text-center">
-          play_arrow
-        </span>
-        <span className="material-symbols-outlined flex-1 text-center">
+        </button>
+        <button
+          className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors"
+          onClick={() => setIsPlaying((p) => !p)}
+          aria-label={isPlaying ? 'Pause' : 'Play'}
+        >
+          {isPlaying ? 'pause' : 'play_arrow'}
+        </button>
+        <button className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors" aria-label="Next">
           skip_next
-        </span>
-        <span className="material-symbols-outlined flex-1 text-center">
+        </button>
+        <button className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors" aria-label="Like">
           thumb_up
-        </span>
-        <span className="material-symbols-outlined flex-1 text-center">
+        </button>
+        <button className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors" aria-label="Instant Mix">
           instant_mix
-        </span>
-        <span className="material-symbols-outlined flex-1 text-center">
+        </button>
+        <button className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors" aria-label="Search">
           search
-        </span>
+        </button>
       </div>
     </div>
   );
@@ -493,6 +543,11 @@ export default function TestDrivePage() {
   const [driverSeatHeat, setDriverSeatHeat] = useState<number>(0);
   const [passengerSeatHeat, setPassengerSeatHeat] = useState<number>(0);
   const [volumeLevel, setVolumeLevel] = useState<number>(0);
+  const [uiAnim, setUiAnim] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setUiAnim(true), 100); // trigger animation after mount
+  }, []);
 
   const handleHeatLevelChange = (
     setter: React.Dispatch<React.SetStateAction<number>>
@@ -512,9 +567,21 @@ export default function TestDrivePage() {
 
   return (
     <div className="w-screen h-screen min-h-screen min-w-screen bg-white dark:bg-zinc-900 snap-proximity focus:outline-none transition-colors duration-300 relative overflow-hidden">
-      <div className="background absolute inset-0 w-full h-full bg-[url('/model-3-screen.png')] bg-cover z-0 blur-md" />
-      <div className="flex items-center justify-center w-full h-full relative z-10">
-        <div className="tesla-ui aspect-[730/460] w-full max-w-[80vw] h-auto max-h-[90vh] rounded-2xl overflow-hidden font-universal-sans text-zinc-800 bg-white/80 dark:bg-zinc-900/80 shadow-2xl p-2">
+      <motion.div
+        initial={{ scale: 1, opacity: 0.7, y:24,x:15 }}
+        animate={uiAnim ? { scale: 1.7, opacity: 1,y:50,x:15 } : {}}
+        transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
+        className="background absolute inset-0 w-full h-full bg-[url('/model-3-screen.png')] bg-cover z-0"
+        style={{ willChange: 'transform, filter' }}
+      />
+      <motion.div
+        initial={{ scale: 0.6, opacity: 0.7 }}
+        animate={uiAnim ? { scale: 1, opacity: 1 } : {}}
+        transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
+        className="flex items-center justify-center w-full h-full absolute inset-0 z-10"
+        style={{ pointerEvents: 'none' }}
+      >
+        <div className="tesla-ui aspect-[730/460] w-auto min-w-[1200px] min-h-[800px] max-w-[90vw] h-auto max-h-[90vh] rounded-2xl overflow-hidden font-universal-sans text-zinc-800 bg-white/80 dark:bg-zinc-900/80 shadow-2xl  flex flex-col justify-center items-center" style={{ pointerEvents: 'auto' }}>
           <div className="flex flex-col w-full h-full">
             <div className="flex grow">
               <div className="relative basis-1/3 flex flex-col justify-center items-center p-2 z-30">
@@ -568,7 +635,7 @@ export default function TestDrivePage() {
                     </div>
                   </div>
                   <div className="self-center">
-                    <span className="text-[1.5em] font-medium">Hello</span>
+                    {/* <span className="text-[1.5em] font-medium">Hello</span> */}
                   </div>
                 </div>
                 <div className="absolute inset-0 z-10 w-full h-full min-h-[18.75em]">
@@ -656,7 +723,7 @@ export default function TestDrivePage() {
                 >
                   <img
                     src="/screen-icons/car-icon.png"
-                    className="w-[50px]"
+                    className="w-[2.5em] h-[2.5em] min-w-[1.5em] min-h-[1.5em] max-w-[3em] max-h-[3em] object-contain"
                     alt="Car"
                   />
                 </button>
@@ -676,7 +743,7 @@ export default function TestDrivePage() {
                 </button>
                 <div className="">
                   <div className="text-4xl font-medium">{driverTemp}°</div>
-                </div>{" "}
+                </div> {" "}
                 <button
                   className="text-white/40 p-1 rounded transition-colors hover:bg-gray-700/50 active:bg-gray-700"
                   onClick={() =>
@@ -687,14 +754,14 @@ export default function TestDrivePage() {
                     chevron_right
                   </span>
                 </button>
-              </div>{" "}
+              </div> {" "}
               {/* Driver Seat Heater */}
               <motion.button
                 className="p-2 rounded-lg transition-colors hover:bg-gray-700/50 active:bg-gray-700"
                 onClick={() => handleHeatLevelChange(setDriverSeatHeat)}
               >
                 <SeatHeater heatLevel={driverSeatHeat} rightSide={false} />
-              </motion.button>{" "}
+              </motion.button> {" "}
               <div className="flex items-center justify-evenly w-full gap-2">
                 <button
                   onClick={() =>
@@ -710,7 +777,7 @@ export default function TestDrivePage() {
                   <img
                     src="/screen-icons/phone.png"
                     alt="Phone"
-                    className="h-[40px]"
+                    className="h-[2.2em] w-[2.2em] min-h-[1.2em] min-w-[1.2em] max-h-[2.5em] max-w-[2.5em] object-contain"
                   />
                 </button>
 
@@ -718,28 +785,28 @@ export default function TestDrivePage() {
                   <img
                     src="/screen-icons/music-icon.png"
                     alt="Music"
-                    className="h-[40px]"
+                    className="h-[2.2em] w-[2.2em] min-h-[1.2em] min-w-[1.2em] max-h-[2.5em] max-w-[2.5em] object-contain"
                   />
                 </button>
                 <button className="p-2 rounded-lg transition-colors hover:bg-gray-700/50 active:bg-gray-700">
                   <img
                     src="/screen-icons/camera-icon.png"
                     alt="Camera"
-                    className="h-[40px]"
+                    className="h-[2.2em] w-[2.2em] min-h-[1.2em] min-w-[1.2em] max-h-[2.5em] max-w-[2.5em] object-contain"
                   />
                 </button>
                 <button className="p-2 rounded-lg transition-colors hover:bg-gray-700/50 active:bg-gray-700">
                   <img
                     src="/screen-icons/calendar-icon.png"
                     alt="Calendar"
-                    className="h-[40px]"
+                    className="h-[2.2em] w-[2.2em] min-h-[1.2em] min-w-[1.2em] max-h-[2.5em] max-w-[2.5em] object-contain"
                   />
                 </button>
                 <button className="p-2 rounded-lg transition-colors hover:bg-gray-700/50 active:bg-gray-700">
                   <img
                     src="/screen-icons/settings-icon.png"
                     alt="Settings"
-                    className="h-[40px]"
+                    className="h-[2.2em] w-[2.2em] min-h-[1.2em] min-w-[1.2em] max-h-[2.5em] max-w-[2.5em] object-contain"
                   />
                 </button>
               </div>
@@ -763,7 +830,7 @@ export default function TestDrivePage() {
                 </button>
                 <div className="flex ">
                   <div className="text-4xl font-medium">{passengerTemp}°</div>
-                </div>{" "}
+                </div> {" "}
                 <button
                   className="text-white/40 p-1 rounded transition-colors hover:bg-gray-700/50 active:bg-gray-700"
                   onClick={() =>
@@ -798,7 +865,8 @@ export default function TestDrivePage() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
+      {/* ...rest of overlays and UI... */}
     </div>
   );
 }
