@@ -218,7 +218,7 @@ const MusicCard = memo(function MusicCard() {
     <div className="grid grid-flow-row grid-rows-[1fr_0.1fr_1fr] text-gray-700 dark:text-gray-200 bg-slate-50 dark:bg-zinc-900 h-full w-full min-w-[220px] max-h-[140px] snap-center transition-colors duration-300 rounded-lg drop-shadow-lg text-xs flex-1 select-none">
       <div className="grid grid-rows-1 grid-cols-[0.3fr_1fr_0.2fr_0.2fr] items-center w-full gap-3">
         <img
-          src="/Cybertruck.jpg"
+          src="/Cybertruck.webp"
           alt="Album cover"
           className="object-cover aspect-square"
         />
@@ -498,7 +498,7 @@ const SeatHeater = memo(function SeatHeater({
   return (
     <div className="relative">
       <img
-        src="/screen-icons/car-seat-icon-sm.png"
+        src="/screen-icons/car-seat-icon-sm.svg"
         className={`h-[40px] invert ${rightSide ? "rotate-y-180" : ""}`}
         alt="Seat"
       />
@@ -550,7 +550,7 @@ const VolumeControl = memo(function VolumeControl({
   return (
     <div className="relative">
       <img
-        src="/screen-icons/volume.png"
+        src="/screen-icons/volume.svg"
         alt="Volume"
         className="max-h-[30px] invert"
       />{" "}
@@ -633,7 +633,7 @@ export default function TestDrivePage() {
         initial={{ scale: 1, opacity: 0.7, y: 24, x: 15 }}
         animate={{ scale: 1.7, opacity: 1, y: 50, x: 15 }}
         transition={{ duration: 0.9, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
-        className="background absolute inset-0 w-full h-full bg-[url('/model-3-screen.png')] bg-cover z-0"
+        className="background absolute inset-0 w-full h-full bg-[url('/model-3-screen.webp')] bg-cover z-0"
         style={{ willChange: "transform, filter" }}
       />
       <motion.div
@@ -825,6 +825,7 @@ export default function TestDrivePage() {
                     alt="Phone"
                     className="h-[2.2em] w-[2.2em] min-h-[1.2em] min-w-[1.2em] max-h-[2.5em] max-w-[2.5em] object-contain"
                   />
+                 
                 </button>
 
                 <button className="p-2 rounded-lg transition-colors hover:bg-gray-700/50 active:bg-gray-700">

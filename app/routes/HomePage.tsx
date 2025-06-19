@@ -16,14 +16,14 @@ type Car = { name: string; bodyType: string; value: number; img: string };
 const cars: Car[] = [
   {
     name: "Cybertruck",
-    img: "/Cybertruck.jpg",
+    img: "/Cybertruck.webp",
     bodyType: "Truck",
     value: 80000,
   },
   { name: "Model Y", img: "/Model-Y.jpg", bodyType: "SUV", value: 30000 },
   {
     name: "Model 3",
-    img: "/Model-3.jpg",
+    img: "/Model-3.webp",
     bodyType: "Sporty Sedan",
     value: 20000,
   },
@@ -136,9 +136,10 @@ export default function HomePage() {
             muted
             playsInline
             aria-label="Highway at dusk"
+            onCanPlay={() => setIsVideoPlaying(true)}
+            onError={() => setIsVideoPlaying(false)}
           >
             <source src="/background.mp4" type="video/mp4" />
-            <source src="/background.webm" type="video/webm" />
           </video>
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-blue-900 to-indigo-900" />
