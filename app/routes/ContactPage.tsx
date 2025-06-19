@@ -115,7 +115,7 @@ export default function ContactPage() {
           <div className="rounded-2xl border border-black/10 dark:border-white/20 bg-white/50 dark:bg-black/40 backdrop-blur-sm p-6 transition-all duration-300">
             <h2 className="text-2xl font-semibold mb-6">{t("contact.sendMessage", "Send us a Message")}</h2>
             
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form action="https://formsubmit.co/iamlivio@gmail.com" method="POST" className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {t("contact.name", "Name")}
@@ -160,6 +160,8 @@ export default function ContactPage() {
                   onChange={(e) => setFormData({...formData, message: e.target.value})}
                 />
               </div>
+
+              <input type="hidden" name="_next" value={window.location.href} />
 
               <button
                 type="submit"
