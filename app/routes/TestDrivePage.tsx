@@ -17,6 +17,7 @@ import {
   useEffect,
   memo,
   useCallback,
+  useMemo,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -45,7 +46,10 @@ const Model3 = memo(function Model3() {
           color="black"
           lineWidth={1}
         />
-        <Html position={[0.2, 1.7, -0.9]} style={{ color: "black", fontSize: "12px" }}>
+        <Html
+          position={[0.2, 1.7, -0.9]}
+          style={{ color: "black", fontSize: "12px" }}
+        >
           <div className="p-4">
             <span className="text-lg text-zinc-600">Model 3</span>
           </div>
@@ -69,16 +73,13 @@ const Scene = memo(
 
     const handleControlEnd = useCallback(() => {
       window.resetTimer = window.setTimeout(() => {
-        if (controlsRef.current) {
-          controlsRef.current.setPosition(...cameraResetPosition, true);
-        }
+        controlsRef.current?.setPosition(...cameraResetPosition, true);
       }, 5000);
     }, [cameraResetPosition]);
 
     useEffect(() => {
-      if (controlsRef.current) {
-        controlsRef.current.setPosition(...cameraResetPosition, true);
-      }
+      controlsRef.current?.setPosition(...cameraResetPosition, true);
+
       return () => {
         if (window.resetTimer) clearTimeout(window.resetTimer);
       };
@@ -122,7 +123,13 @@ const Scene = memo(
           castShadow
           shadow-mapSize={[256, 256]}
         />
-        <Suspense fallback={<Html center className='text-zinc-400'>Loading 3D...</Html>}>
+        <Suspense
+          fallback={
+            <Html center className="text-zinc-400">
+              Loading 3D...
+            </Html>
+          }
+        >
           <Center>
             <Model3 />
           </Center>
@@ -141,7 +148,7 @@ const Scene = memo(
   }
 );
 
-function TripsCard() {
+const TripsCard = memo(function TripsCard() {
   return (
     <div className="rounded-lg drop-shadow-lg text-gray-700 dark:text-gray-200 bg-slate-50 dark:bg-zinc-900 h-full w-full min-w-[220px] min-h-[140px] snap-center transition-colors duration-300 p-4 text-sm">
       <div className="w-full h-full grid grid-cols-3 grid-rows-1 gap-4">
@@ -166,16 +173,15 @@ function TripsCard() {
       </div>
     </div>
   );
-}
+});
 
-function MusicCard() {
+const MusicCard = memo(function MusicCard() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [shuffle, setShuffle] = useState(false);
   const [repeat, setRepeat] = useState(false);
-  const [progress, setProgress] = useState(0.1); // 0 to 1
+  const [progress, setProgress] = useState(0.1);
   const progressBarRef = useRef<HTMLDivElement>(null);
 
-  // Simulate progress for demo
   useEffect(() => {
     if (!isPlaying) return;
     const interval = setInterval(() => {
@@ -184,34 +190,57 @@ function MusicCard() {
     return () => clearInterval(interval);
   }, [isPlaying]);
 
-  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!progressBarRef.current) return;
-    const rect = progressBarRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    setProgress(Math.max(0, Math.min(1, x / rect.width)));
-  };
+  const handleProgressClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!progressBarRef.current) return;
+      const rect = progressBarRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      setProgress(Math.max(0, Math.min(1, x / rect.width)));
+    },
+    []
+  );
+
+  const progressBarStyle = useMemo(
+    () => ({
+      width: `${progress * 100}%`,
+    }),
+    [progress]
+  );
+
+  const thumbStyle = useMemo(
+    () => ({
+      left: `calc(${progress * 100}% - 4px)`,
+    }),
+    [progress]
+  );
 
   return (
     <div className="grid grid-flow-row grid-rows-[1fr_0.1fr_1fr] text-gray-700 dark:text-gray-200 bg-slate-50 dark:bg-zinc-900 h-full w-full min-w-[220px] max-h-[140px] snap-center transition-colors duration-300 rounded-lg drop-shadow-lg text-xs flex-1 select-none">
       <div className="grid grid-rows-1 grid-cols-[0.3fr_1fr_0.2fr_0.2fr] items-center w-full gap-3">
         <img
           src="/Cybertruck.jpg"
-          alt=""
+          alt="Album cover"
           className="object-cover aspect-square"
         />
         <div className="flex flex-col w-full overflow-hidden">
           <span className="font-semibold text-sm truncate">Song Title</span>
-          <span className="text-gray-500 dark:text-gray-400 text-xs truncate">Artist - Album</span>
+          <span className="text-gray-500 dark:text-gray-400 text-xs truncate">
+            Artist - Album
+          </span>
         </div>
         <button
-          className={`material-symbols-outlined transition-colors ${shuffle ? 'text-blue-500' : ''}`}
+          className={`material-symbols-outlined transition-colors ${
+            shuffle ? "text-blue-500" : ""
+          }`}
           onClick={() => setShuffle((s) => !s)}
           aria-label="Shuffle"
         >
           shuffle
         </button>
         <button
-          className={`material-symbols-outlined transition-colors ${repeat ? 'text-blue-500' : ''}`}
+          className={`material-symbols-outlined transition-colors ${
+            repeat ? "text-blue-500" : ""
+          }`}
           onClick={() => setRepeat((r) => !r)}
           aria-label="Repeat"
         >
@@ -226,73 +255,95 @@ function MusicCard() {
       >
         <div
           className="absolute top-1/2 -translate-y-1/2 h-[8px] rounded-full bg-zinc-400 dark:bg-zinc-500 transition-all"
-          style={{ left: `calc(${progress * 100}% - 4px)`, width: 8, pointerEvents: 'none' }}
+          style={thumbStyle}
         ></div>
         <div
           className="absolute top-0 left-0 h-full bg-blue-400/60 dark:bg-blue-500/60 rounded"
-          style={{ width: `${progress * 100}%` }}
+          style={progressBarStyle}
         ></div>
       </div>
       <div className="flex items-center justify-between w-full h-full flex-1">
-        <button className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors" aria-label="Previous">
+        <button
+          className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors"
+          aria-label="Previous"
+        >
           skip_previous
         </button>
         <button
           className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors"
           onClick={() => setIsPlaying((p) => !p)}
-          aria-label={isPlaying ? 'Pause' : 'Play'}
+          aria-label={isPlaying ? "Pause" : "Play"}
         >
-          {isPlaying ? 'pause' : 'play_arrow'}
+          {isPlaying ? "pause" : "play_arrow"}
         </button>
-        <button className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors" aria-label="Next">
+        <button
+          className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors"
+          aria-label="Next"
+        >
           skip_next
         </button>
-        <button className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors" aria-label="Like">
+        <button
+          className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors"
+          aria-label="Like"
+        >
           thumb_up
         </button>
-        <button className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors" aria-label="Instant Mix">
+        <button
+          className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors"
+          aria-label="Instant Mix"
+        >
           instant_mix
         </button>
-        <button className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors" aria-label="Search">
+        <button
+          className="material-symbols-outlined flex-1 text-center hover:text-blue-500 transition-colors"
+          aria-label="Search"
+        >
           search
         </button>
       </div>
     </div>
   );
-}
+});
 
-function TireCard() {
+const TireCard = memo(function TireCard() {
   return (
     <div className="rounded-lg drop-shadow-lg flex text-gray-700 dark:text-gray-200 bg-slate-50 dark:bg-zinc-900 h-full min-w-[220px] min-h-[140px] max-w-full snap-center transition-colors duration-300 p-2 text-sm justify-center">
       <span className="w-full font-medium p-3">Tire pressure</span>
       <div className="grid grid-cols-3 grid-rows-2 gap-2 w-full">
         <div className="flex flex-col justify-center items-center">
           <span>44 </span>
-          <span className="text-[0.7em] text-zinc-500 dark:text-zinc-400">psi</span>
+          <span className="text-[0.7em] text-zinc-500 dark:text-zinc-400">
+            psi
+          </span>
         </div>
         <div className="row-span-2 p-2 self-center">
-          <img src="/model-3-car-top-down.png" alt="" />
+          <img src="/model-3-car-top-down.png" alt="Car top view" />
         </div>
         <div className="flex flex-col justify-center items-center">
           <span>44 </span>
-          <span className="text-[0.7em] text-zinc-500 dark:text-zinc-400">psi</span>
+          <span className="text-[0.7em] text-zinc-500 dark:text-zinc-400">
+            psi
+          </span>
         </div>
         <div className="flex flex-col justify-center items-center">
           <span>44 </span>
-          <span className="text-[0.7em] text-zinc-500 dark:text-zinc-400">psi</span>
+          <span className="text-[0.7em] text-zinc-500 dark:text-zinc-400">
+            psi
+          </span>
         </div>
         <div className="flex flex-col justify-center items-center">
           <span>44 </span>
-          <span className="text-[0.7em] text-zinc-500 dark:text-zinc-400">psi</span>
+          <span className="text-[0.7em] text-zinc-500 dark:text-zinc-400">
+            psi
+          </span>
         </div>
       </div>
     </div>
   );
-}
+});
 
 function InfoCardCarousel() {
-  // Order: Music, Tires, Trips
-  const infoCards = [MusicCard, TireCard, TripsCard];
+  const infoCards = useMemo(() => [MusicCard, TireCard, TripsCard], []);
   const [index, setIndex] = useState(0);
 
   return (
@@ -315,7 +366,11 @@ function InfoCardCarousel() {
         {infoCards.map((_, i) => (
           <span
             key={i}
-            className={`w-[5px] h-[5px] rounded-full ${i === index ? "bg-zinc-600 dark:bg-zinc-200" : "bg-zinc-400 dark:bg-zinc-600"} inline-block`}
+            className={`w-[5px] h-[5px] rounded-full ${
+              i === index
+                ? "bg-zinc-600 dark:bg-zinc-200"
+                : "bg-zinc-400 dark:bg-zinc-600"
+            } inline-block`}
           />
         ))}
       </div>
@@ -324,7 +379,11 @@ function InfoCardCarousel() {
 }
 
 // Contact form component
-function ContactForm({ onClose }: { onClose: () => void }) {
+const ContactForm = memo(function ContactForm({
+  onClose,
+}: {
+  onClose: () => void;
+}) {
   return (
     <motion.div
       className="absolute inset-0 z-20 rounded-t-md mt-10 shadow-[0_0_10px_rgba(0,0,0,0.5)] overflow-hidden bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 transition-colors duration-300"
@@ -344,9 +403,13 @@ function ContactForm({ onClose }: { onClose: () => void }) {
       </div>
     </motion.div>
   );
-}
+});
 
-function CarSettings({ onClose }: { onClose: () => void }) {
+const CarSettings = memo(function CarSettings({
+  onClose,
+}: {
+  onClose: () => void;
+}) {
   return (
     <motion.div
       className="absolute inset-0 z-20 rounded-t-md mt-10 shadow-[0_0_10px_rgba(0,0,0,0.5)] overflow-hidden bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 transition-colors duration-300"
@@ -366,19 +429,14 @@ function CarSettings({ onClose }: { onClose: () => void }) {
       </div>
     </motion.div>
   );
-}
+});
 
 // Map component with Leaflet
-function MapView({ onClose }: { onClose: () => void }) {
+const MapView = memo(function MapView({ onClose }: { onClose: () => void }) {
   const mapRef = useRef<HTMLDivElement>(null);
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isClient || !mapRef.current) return;
+    if (!mapRef.current) return;
 
     // Dynamically import Leaflet
     Promise.all([import("leaflet"), import("leaflet/dist/leaflet.css")]).then(
@@ -415,39 +473,42 @@ function MapView({ onClose }: { onClose: () => void }) {
         };
       }
     );
-  }, [isClient]);
+  }, []);
 
   return (
     <div className="h-full w-full">
       <div ref={mapRef} className="w-full h-full" />
     </div>
   );
-}
+});
 
 // Seat heater component with heat level support
-function SeatHeater({
+const SeatHeater = memo(function SeatHeater({
   heatLevel = 0,
   rightSide = false,
 }: {
   heatLevel?: number;
   rightSide?: boolean;
 }) {
+  const heatLevels = useMemo(
+    () => Array.from({ length: heatLevel }),
+    [heatLevel]
+  );
+
   return (
     <div className="relative">
       <img
         src="/screen-icons/car-seat-icon-sm.png"
-        className={"h-[40px] invert" + (rightSide ? " rotate-y-180" : "")}
+        className={`h-[40px] invert ${rightSide ? "rotate-y-180" : ""}`}
         alt="Seat"
       />
       {heatLevel > 0 && (
         <div
-          className={
-            "absolute bottom-7 " +
-            (rightSide ? "right-6 " : "left-10 rotate-y-180") +
-            " flex flex-col justify-center items-center rotate-90"
-          }
+          className={`absolute bottom-7 ${
+            rightSide ? "right-6 " : "left-10 rotate-y-180"
+          } flex flex-col justify-center items-center rotate-90`}
         >
-          {Array.from({ length: heatLevel }).map((_, i) => (
+          {heatLevels.map((_, i) => (
             <motion.svg
               key={i}
               width="24"
@@ -476,10 +537,16 @@ function SeatHeater({
       )}
     </div>
   );
-}
+});
 
 // Volume control component with level indicators
-function VolumeControl({ level = 0 }: { level?: number }) {
+const VolumeControl = memo(function VolumeControl({
+  level = 0,
+}: {
+  level?: number;
+}) {
+  const levels = useMemo(() => Array.from({ length: level }), [level]);
+
   return (
     <div className="relative">
       <img
@@ -490,15 +557,12 @@ function VolumeControl({ level = 0 }: { level?: number }) {
       {level > 0 && (
         <div className="absolute top-1/2 left-full ml-2 -translate-y-1/2 flex flex-col items-start">
           <svg width="40" height="40" style={{ display: "block" }}>
-            {Array.from({ length: level }).map((_, i) => {
-              const r = 1 + i * 5; // radius grows for each level
-              const cx = 0,
-                cy = 20;
-              // Draw right half circle
+            {levels.map((_, i) => {
+              const r = 1 + i * 5;
               return (
                 <path
                   key={i}
-                  d={`M ${cx} ${cy - r} A ${r} ${r} 0 0 1 ${cx - 1} ${cy + r}`}
+                  d={`M 0 ${20 - r} A ${r} ${r} 0 0 1 -1 ${20 + r}`}
                   fill="none"
                   stroke="white"
                   strokeWidth="3"
@@ -511,77 +575,78 @@ function VolumeControl({ level = 0 }: { level?: number }) {
       )}
     </div>
   );
-}
+});
 
-function ChooseCar({ onClose }: { onClose: () => void }) {
-  return (
-    <motion.div
-      className="absolute inset-0 z-20 rounded-t-md mt-10 shadow-[0_0_10px_rgba(0,0,0,0.5)] overflow-hidden bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 transition-colors duration-300"
-      initial={{ y: "100%" }}
-      animate={{ y: 0 }}
-      exit={{ y: "100%" }}
-      transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-    >
-      <div className="grid grid-rows-1 grid-cols-[0.4fr_1fr] size-full mt-10">
-        <div className="flex flex-col w-full overflow-y-auto px-6 gap-4 text-gray-400 font-[530] text-lg">
-          <div className="w-full active:bg-white/90 hover:bg-white/90 active:text-gray-800 hover:text-gray-800 px-4 py-2 rounded-md flex items-center gap-3">
-            <span className="material-symbols-outlined">lock</span>
-            <span>Phone</span>
-          </div>
-        </div>
-        <form className=""></form>
-      </div>
-    </motion.div>
-  );
-}
+const initialCameraPosition: [number, number, number] = [-4, 2, -4];
 
 export default function TestDrivePage() {
   const [activeApp, setActiveApp] = useState<"contact" | "map" | "car">("map");
-  const [cameraResetPosition] = useState<[number, number, number]>([-4, 2, -4]);
+  const [cameraResetPosition] = useState(initialCameraPosition);
   const [driverTemp, setDriverTemp] = useState<number>(22);
   const [passengerTemp, setPassengerTemp] = useState<number>(22);
   const [driverSeatHeat, setDriverSeatHeat] = useState<number>(0);
   const [passengerSeatHeat, setPassengerSeatHeat] = useState<number>(0);
   const [volumeLevel, setVolumeLevel] = useState<number>(0);
-  const [uiAnim, setUiAnim] = useState(false);
 
-  useEffect(() => {
-    setTimeout(() => setUiAnim(true), 100); // trigger animation after mount
+  // Memoized callbacks
+  const handleDriverSeatHeat = useCallback(() => {
+    setDriverSeatHeat((current) => (current + 1) % 4);
   }, []);
 
-  const handleHeatLevelChange = (
-    setter: React.Dispatch<React.SetStateAction<number>>
-  ) => {
-    setter((current: number) => (current + 1) % 4);
-  };
+  const handlePassengerSeatHeat = useCallback(() => {
+    setPassengerSeatHeat((current) => (current + 1) % 4);
+  }, []);
 
-  const handleVolumeChange = (increment: boolean) => {
-    setVolumeLevel((current) => {
-      if (increment) {
-        return current < 3 ? current + 1 : current;
-      } else {
-        return current > 0 ? current - 1 : current;
-      }
-    });
-  };
+  const handleVolumeUp = useCallback(() => {
+    setVolumeLevel((current) => (current < 3 ? current + 1 : current));
+  }, []);
+
+  const handleVolumeDown = useCallback(() => {
+    setVolumeLevel((current) => (current > 0 ? current - 1 : current));
+  }, []);
+
+  const decreaseDriverTemp = useCallback(
+    () => setDriverTemp((d) => Math.max(15, d - 1)),
+    []
+  );
+
+  const increaseDriverTemp = useCallback(
+    () => setDriverTemp((d) => Math.min(30, d + 1)),
+    []
+  );
+
+  const decreasePassengerTemp = useCallback(
+    () => setPassengerTemp((p) => Math.max(15, p - 1)),
+    []
+  );
+
+  const increasePassengerTemp = useCallback(
+    () => setPassengerTemp((p) => Math.min(30, p + 1)),
+    []
+  );
+
+  const closeApp = useCallback(() => setActiveApp("map"), []);
 
   return (
     <div className="w-screen h-screen min-h-screen min-w-screen bg-white dark:bg-zinc-900 snap-proximity focus:outline-none transition-colors duration-300 relative overflow-hidden">
       <motion.div
-        initial={{ scale: 1, opacity: 0.7, y:24,x:15 }}
-        animate={uiAnim ? { scale: 1.7, opacity: 1,y:50,x:15 } : {}}
-        transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
+        initial={{ scale: 1, opacity: 0.7, y: 24, x: 15 }}
+        animate={{ scale: 1.7, opacity: 1, y: 50, x: 15 }}
+        transition={{ duration: 0.9, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
         className="background absolute inset-0 w-full h-full bg-[url('/model-3-screen.png')] bg-cover z-0"
-        style={{ willChange: 'transform, filter' }}
+        style={{ willChange: "transform, filter" }}
       />
       <motion.div
         initial={{ scale: 0.6, opacity: 0.7 }}
-        animate={uiAnim ? { scale: 1, opacity: 1 } : {}}
-        transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.9, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
         className="flex items-center justify-center w-full h-full absolute inset-0 z-10"
-        style={{ pointerEvents: 'none' }}
+        style={{ pointerEvents: "none" }}
       >
-        <div className="tesla-ui aspect-[730/460] w-auto min-w-[1200px] min-h-[800px] max-w-[90vw] h-auto max-h-[90vh] rounded-2xl overflow-hidden font-universal-sans text-zinc-800 bg-white/80 dark:bg-zinc-900/80 shadow-2xl  flex flex-col justify-center items-center" style={{ pointerEvents: 'auto' }}>
+        <div
+          className="tesla-ui aspect-[730/460] w-auto min-w-[1200px] min-h-[800px] max-w-[90vw] h-auto max-h-[90vh] rounded-2xl overflow-hidden font-universal-sans text-zinc-800 bg-white/80 dark:bg-zinc-900/80 shadow-2xl  flex flex-col justify-center items-center"
+          style={{ pointerEvents: "auto" }}
+        >
           <div className="flex flex-col w-full h-full">
             <div className="flex grow">
               <div className="relative basis-1/3 flex flex-col justify-center items-center p-2 z-30">
@@ -611,7 +676,6 @@ export default function TestDrivePage() {
                           stroke="#a1a1aa"
                           strokeWidth="2"
                         />
-                        {/* Battery level (44%) */}
                         <rect
                           x="4"
                           y="6"
@@ -620,7 +684,6 @@ export default function TestDrivePage() {
                           rx="1"
                           fill="#52525b"
                         />
-                        {/* Battery tip */}
                         <rect
                           x="48"
                           y="9"
@@ -674,30 +737,21 @@ export default function TestDrivePage() {
                       </span>
                       <span>Profile</span>
                     </div>
-                    
                   </div>
                   {/* Content Area */}
                   <div className="relative w-full h-full overflow-hidden z-10">
-                    {/* MapView always in background */}
                     <div className="absolute inset-0 z-0">
-                      <MapView onClose={() => setActiveApp("map")} />
+                      <MapView onClose={closeApp} />
                     </div>
-                    {/* Animated Content overlays above map with shadow */}
                     <AnimatePresence mode="wait">
                       {activeApp === "contact" && (
                         <div className="absolute inset-0 z-20 bg-transparent shadow-2xl">
-                          <ContactForm
-                            key="contact"
-                            onClose={() => setActiveApp("map")}
-                          />
+                          <ContactForm key="contact" onClose={closeApp} />
                         </div>
                       )}
                       {activeApp === "car" && (
                         <div className="absolute inset-0 z-20 bg-transparent shadow-2xl">
-                          <CarSettings
-                            key="car-settings"
-                            onClose={() => setActiveApp("map")}
-                          />
+                          <CarSettings key="car-settings" onClose={closeApp} />
                         </div>
                       )}
                     </AnimatePresence>
@@ -708,7 +762,6 @@ export default function TestDrivePage() {
 
             {/* Footer bar */}
             <div className="grid grid-rows-1 grid-cols-[0.3fr_0.3fr_0.2fr_1fr_0.2fr_0.3fr_0.3fr] items-center place-items-center p-3 bg-black w-full h-[5em] text-white text-[0.875em]">
-              {" "}
               <div className="place-self-start ml-5">
                 <button
                   onClick={() =>
@@ -728,14 +781,10 @@ export default function TestDrivePage() {
                   />
                 </button>
               </div>
-              {/* Driver Temperature */}
               <div className="flex items-center justify-evenly w-full gap-2">
-                {" "}
                 <button
                   className="text-white/40 p-1 rounded transition-colors hover:bg-gray-700/50 active:bg-gray-700"
-                  onClick={() =>
-                    setDriverTemp((d: number) => Math.max(15, d - 1))
-                  }
+                  onClick={decreaseDriverTemp}
                 >
                   <span className="material-symbols-outlined">
                     chevron_left
@@ -743,25 +792,22 @@ export default function TestDrivePage() {
                 </button>
                 <div className="">
                   <div className="text-4xl font-medium">{driverTemp}°</div>
-                </div> {" "}
+                </div>
                 <button
                   className="text-white/40 p-1 rounded transition-colors hover:bg-gray-700/50 active:bg-gray-700"
-                  onClick={() =>
-                    setDriverTemp((d: number) => Math.min(30, d + 1))
-                  }
+                  onClick={increaseDriverTemp}
                 >
                   <span className="material-symbols-outlined">
                     chevron_right
                   </span>
                 </button>
-              </div> {" "}
-              {/* Driver Seat Heater */}
+              </div>
               <motion.button
                 className="p-2 rounded-lg transition-colors hover:bg-gray-700/50 active:bg-gray-700"
-                onClick={() => handleHeatLevelChange(setDriverSeatHeat)}
+                onClick={handleDriverSeatHeat}
               >
                 <SeatHeater heatLevel={driverSeatHeat} rightSide={false} />
-              </motion.button> {" "}
+              </motion.button>
               <div className="flex items-center justify-evenly w-full gap-2">
                 <button
                   onClick={() =>
@@ -812,17 +858,14 @@ export default function TestDrivePage() {
               </div>
               <motion.button
                 className="p-2 rounded-lg transition-colors hover:bg-gray-700/50 active:bg-gray-700"
-                onClick={() => handleHeatLevelChange(setPassengerSeatHeat)}
+                onClick={handlePassengerSeatHeat}
               >
                 <SeatHeater heatLevel={passengerSeatHeat} rightSide={true} />
               </motion.button>
               <div className="flex items-center justify-evenly w-full gap-2">
-                {" "}
                 <button
                   className="text-white/40 p-1 rounded transition-colors hover:bg-gray-700/50 active:bg-gray-700"
-                  onClick={() =>
-                    setPassengerTemp((p: number) => Math.max(15, p - 1))
-                  }
+                  onClick={decreasePassengerTemp}
                 >
                   <span className="material-symbols-outlined">
                     chevron_left
@@ -830,23 +873,20 @@ export default function TestDrivePage() {
                 </button>
                 <div className="flex ">
                   <div className="text-4xl font-medium">{passengerTemp}°</div>
-                </div> {" "}
+                </div>
                 <button
                   className="text-white/40 p-1 rounded transition-colors hover:bg-gray-700/50 active:bg-gray-700"
-                  onClick={() =>
-                    setPassengerTemp((p: number) => Math.min(30, p + 1))
-                  }
+                  onClick={increasePassengerTemp}
                 >
                   <span className="material-symbols-outlined">
                     chevron_right
                   </span>
                 </button>
-              </div>{" "}
-              {/* Volume Control */}
+              </div>
               <div className="flex items-center justify-evenly w-full h-full gap-2">
                 <button
                   className="p-1 rounded transition-colors hover:bg-gray-700/50 active:bg-gray-700"
-                  onClick={() => handleVolumeChange(false)}
+                  onClick={handleVolumeDown}
                 >
                   <span className="material-symbols-outlined text-white/40">
                     chevron_left
@@ -855,7 +895,7 @@ export default function TestDrivePage() {
                 <VolumeControl level={volumeLevel} />
                 <button
                   className="p-1 rounded transition-colors hover:bg-gray-700/50 active:bg-gray-700"
-                  onClick={() => handleVolumeChange(true)}
+                  onClick={handleVolumeUp}
                 >
                   <span className="material-symbols-outlined text-white/40">
                     chevron_right
@@ -866,7 +906,6 @@ export default function TestDrivePage() {
           </div>
         </div>
       </motion.div>
-      {/* ...rest of overlays and UI... */}
     </div>
   );
 }
