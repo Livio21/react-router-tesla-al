@@ -687,7 +687,7 @@ const Form = memo(function Form({ onClose }: { onClose: () => void }) {
         <div className="flex space-x-3 pt-2">
           <button
             type="button"
-            onClick={() => setActiveView(null)}
+            onClick={() => onClose()}
             className="flex-1 py-3 border border-gray-400 text-gray-800 dark:border-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-[#1a1a1a] hover:bg-gray-300 dark:hover:bg-[#222222] transition-colors"
           >
             Cancel
@@ -750,7 +750,7 @@ const TestDriveFlow = memo(function TestDriveFlow({
             SCHEDULE TEST DRIVE
           </h2>
           <button
-            onClick={() => setActiveView(null)}
+            onClick={() => onClose()}
             className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             <XMarkIcon className="w-6 h-6" />
@@ -844,7 +844,7 @@ const TestDriveFlow = memo(function TestDriveFlow({
             </h2>
           </div>
           <button
-            onClick={() => setActiveView(null)}
+            onClick={() => onClose()}
             className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             <XMarkIcon className="w-6 h-6" />
@@ -942,7 +942,7 @@ const TestDriveFlow = memo(function TestDriveFlow({
           <div className="flex space-x-3 pt-2">
             <button
               type="button"
-              onClick={() => setActiveView(null)}
+              onClick={() => onClose()}
               className="flex-1 py-3 border border-gray-400 text-gray-800 dark:border-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-[#1a1a1a] hover:bg-gray-300 dark:hover:bg-[#222222] transition-colors"
             >
               Cancel
@@ -987,7 +987,7 @@ const TestDriveFlow = memo(function TestDriveFlow({
           </h2>
         </div>
         <button
-          onClick={() => setActiveView(null)}
+          onClick={() => onClose}
           className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
         >
           <XMarkIcon className="w-6 h-6" />
@@ -1051,7 +1051,7 @@ const TestDriveFlow = memo(function TestDriveFlow({
           BACK
         </button>
         <button
-          onClick={() => setActiveView(null)}
+          onClick={() => onClose}
           className="flex-1 py-3 bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-600 dark:to-gray-800 text-white border border-gray-700 dark:border-gray-500 hover:from-gray-800 hover:to-gray-900 dark:hover:from-gray-700 dark:hover:to-gray-900 transition-all"
         >
           DONE
@@ -1284,7 +1284,7 @@ const MobileView = () => {
                 LOCATION
               </h2>
               <button
-                onClick={() => setActiveView(null)}
+                onClick={() => onClose}
                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 <XMarkIcon className="w-6 h-6" />
@@ -1292,7 +1292,7 @@ const MobileView = () => {
             </div>
 
             <div className="h-64 w-full mb-6 border border-gray-300 dark:border-gray-700">
-              <MapView onClose={() => setActiveView(null)} />
+              <MapView onClose={() => onClose} />
             </div>
 
             <div className="space-y-4">
@@ -1387,7 +1387,7 @@ const MobileView = () => {
                 CONTACT CHANNELS
               </h2>
               <button
-                onClick={() => setActiveView(null)}
+                onClick={() => onClose}
                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 <XMarkIcon className="w-6 h-6" />
@@ -1471,7 +1471,7 @@ const MobileView = () => {
                 CONTACT FORM
               </h2>
               <button
-                onClick={() => setActiveView(null)}
+                onClick={() => onClose}
                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 <XMarkIcon className="w-6 h-6" />
@@ -1554,7 +1554,7 @@ const MobileView = () => {
               <div className="flex space-x-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => setActiveView(null)}
+                  onClick={() => onClose}
                   className="flex-1 py-3 border border-gray-400 text-gray-800 dark:border-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-[#1a1a1a] hover:bg-gray-300 dark:hover:bg-[#222222] transition-colors"
                 >
                   Cancel
@@ -1591,7 +1591,7 @@ const MobileView = () => {
                   SCHEDULE TEST DRIVE
                 </h2>
                 <button
-                  onClick={() => setActiveView(null)}
+                  onClick={() => onClose}
                   className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   <XMarkIcon className="w-6 h-6" />
@@ -1682,7 +1682,7 @@ const MobileView = () => {
                   </h2>
                 </div>
                 <button
-                  onClick={() => setActiveView(null)}
+                  onClick={() => onClose}
                   className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   <XMarkIcon className="w-6 h-6" />
@@ -1780,7 +1780,7 @@ const MobileView = () => {
                 <div className="flex space-x-3 pt-2">
                   <button
                     type="button"
-                    onClick={() => setActiveView(null)}
+                    onClick={() => onClose}
                     className="flex-1 py-3 border border-gray-400 text-gray-800 dark:border-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-[#1a1a1a] hover:bg-gray-300 dark:hover:bg-[#222222] transition-colors"
                   >
                     Cancel
@@ -1823,7 +1823,7 @@ const MobileView = () => {
                   </h2>
                 </div>
                 <button
-                  onClick={() => setActiveView(null)}
+                  onClick={() => onClose}
                   className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   <XMarkIcon className="w-6 h-6" />
@@ -1887,7 +1887,7 @@ const MobileView = () => {
                   BACK
                 </button>
                 <button
-                  onClick={() => setActiveView(null)}
+                  onClick={() => onClose}
                   className="flex-1 py-3 bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-600 dark:to-gray-800 text-white border border-gray-700 dark:border-gray-500 hover:from-gray-800 hover:to-gray-900 dark:hover:from-gray-700 dark:hover:to-gray-900 transition-all"
                 >
                   DONE
@@ -1913,7 +1913,7 @@ const MobileView = () => {
         return null;
     }
     return (
-      <OverlayView onClose={() => setActiveView(null)} containerClass="">
+      <OverlayView onClose={() => onClose} containerClass="">
         {content}
       </OverlayView>
     );
