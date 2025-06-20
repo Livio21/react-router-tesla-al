@@ -9,5 +9,4 @@ export default [
   route("cars/:brand/:model/:slug", "routes/CarDetailsPage.tsx"),
   route("compare", "routes/ComparePage.tsx"),
   route("info/:type", "routes/InfoPage.tsx"),
-  route("test-drive", "routes/TestDrivePage.tsx"),
 ] satisfies RouteConfig;
