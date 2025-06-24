@@ -1,8 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import {
-  PresentationControls,
   useGLTF,
-  AdaptiveDpr,
   ContactShadows,
   Environment,
   Center,
@@ -59,32 +57,7 @@ const builder = imageUrlBuilder(client);
 const urlFor = (source: any) =>
   builder.image(source).width(400).height(300).fit("crop").url();
 
-const Model3 = memo(function Model3() {
-  const { scene } = useGLTF("/model-3/scene.gltf");
-  return (
-    <group>
-      <primitive object={scene} scale={0.004} position={[0, 1, 0]} />
-      <group position={[0, 0.5, 1]}>
-        <Line
-          points={[
-            [0, 0.9, -1],
-            [0, 1.4, -0.9],
-          ]}
-          color="black"
-          lineWidth={1}
-        />
-        <Html
-          position={[0.2, 1.7, -0.9]}
-          style={{ color: "black", fontSize: "12px" }}
-        >
-          <div className="p-4">
-            <span className="text-lg text-zinc-600">Model 3</span>
-          </div>
-        </Html>
-      </group>
-    </group>
-  );
-});
+
 const Cybertruck = memo(function Cybertruck() {
   const { scene } = useGLTF("/cybertruck-model/scene.gltf");
   return (
@@ -2304,7 +2277,9 @@ export default function ContactPage() {
                       <div className="relative w-full h-full overflow-hidden z-10">
                         <div className="absolute top-0 left-0 mt-10 ml-5 m z-10 w-2/5  bg-white shadow-xl   flex flex-col ">
                           <div className="flex-2/3 w-full p-6 flex items-center gap-2">
-                            <span className="material-symbols-outlined">home</span>
+                            <span className="material-symbols-outlined">
+                              home
+                            </span>
                             <span className="font-medium text-xl ">
                               {t("homepage.title")}
                             </span>
@@ -2367,7 +2342,11 @@ export default function ContactPage() {
                           ? "bg-gray-700"
                           : "hover:bg-gray-700/50 active:bg-gray-700"
                       }
-                      ${guideTarget === "car" && guideActive ? "animate-pulse ring-2 ring-blue-500" : ""}`}
+                      ${
+                        guideTarget === "car" && guideActive
+                          ? "animate-pulse ring-2 ring-blue-500"
+                          : ""
+                      }`}
                     >
                       <img
                         src="/screen-icons/car-icon.png"
@@ -2406,15 +2385,20 @@ export default function ContactPage() {
                   <div className="flex items-center justify-evenly w-full gap-2">
                     <button
                       onClick={() => setActiveApp("map")}
-                      className={`p-2 rounded-lg transition-colors 
+                      className={`p-2 rounded-lg transition-colors flex flex-col items-center 
                     ${
                       activeApp === "map"
                         ? "bg-gray-700"
                         : "hover:bg-gray-700/50 active:bg-gray-700"
                     }
-                    ${guideTarget === "map" && guideActive ? "animate-pulse ring-2 ring-blue-500" : ""}`}
+                    ${
+                      guideTarget === "map" && guideActive
+                        ? "animate-pulse ring-2 ring-blue-500"
+                        : ""
+                    }`}
                     >
                       <MapIcon className="h-[2.2em] w-[2.2em] min-h-[1.2em] min-w-[1.2em] max-h-[2.5em] max-w-[2.5em] object-contain " />
+                      {t("contact.location")}
                     </button>
                     <button
                       onClick={() =>
@@ -2422,29 +2406,39 @@ export default function ContactPage() {
                           activeApp === "contact" ? "map" : "contact"
                         )
                       }
-                      className={`p-2 rounded-lg transition-colors 
+                      className={`p-2 rounded-lg transition-colors flex flex-col items-center 
                     ${
                       activeApp === "contact"
                         ? "bg-gray-700"
                         : "hover:bg-gray-700/50 active:bg-gray-700"
                     }
-                    ${guideTarget === "contact" && guideActive ? "animate-pulse ring-2 ring-blue-500" : ""}`}
+                    ${
+                      guideTarget === "contact" && guideActive
+                        ? "animate-pulse ring-2 ring-blue-500"
+                        : ""
+                    }`}
                     >
                       <PhoneIcon className="h-[2.2em] w-[2.2em] min-h-[1.2em] min-w-[1.2em] max-h-[2.5em] max-w-[2.5em] object-contain " />
+                      {t("contact.contact")}
                     </button>
                     <button
                       onClick={() =>
                         setActiveApp(activeApp === "form" ? "map" : "form")
                       }
-                      className={`p-2 rounded-lg transition-colors 
+                      className={`p-2 rounded-lg transition-colors flex flex-col items-center 
                     ${
                       activeApp === "form"
                         ? "bg-gray-700"
                         : "hover:bg-gray-700/50 active:bg-gray-700"
                     }
-                    ${guideTarget === "form" && guideActive ? "animate-pulse ring-2 ring-blue-500" : ""}`}
+                    ${
+                      guideTarget === "form" && guideActive
+                        ? "animate-pulse ring-2 ring-blue-500"
+                        : ""
+                    }`}
                     >
                       <DocumentTextIcon className="h-[2.2em] w-[2.2em] min-h-[1.2em] min-w-[1.2em] max-h-[2.5em] max-w-[2.5em] object-contain" />
+                      {t("contact.form")}
                     </button>
                     <button
                       onClick={() =>
@@ -2452,15 +2446,20 @@ export default function ContactPage() {
                           activeApp === "test-drive" ? "map" : "test-drive"
                         )
                       }
-                      className={`p-2 rounded-lg transition-colors 
+                      className={`p-2 rounded-lg transition-colors flex flex-col items-center 
                     ${
                       activeApp === "test-drive"
                         ? "bg-gray-700"
                         : "hover:bg-gray-700/50 active:bg-gray-700"
                     }
-                    ${guideTarget === "test-drive" && guideActive ? "animate-pulse ring-2 ring-blue-500" : ""}`}
+                    ${
+                      guideTarget === "test-drive" && guideActive
+                        ? "animate-pulse ring-2 ring-blue-500"
+                        : ""
+                    }`}
                     >
                       <TruckIcon className="h-[2.2em] w-[2.2em] min-h-[1.2em] min-w-[1.2em] max-h-[2.5em] max-w-[2.5em] object-contain " />
+                      {t("contact.testdrive")}
                     </button>
                   </div>
                   <motion.button
