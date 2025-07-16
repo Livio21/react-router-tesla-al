@@ -2071,21 +2071,17 @@ export default function ContactPage() {
   const [guideTarget, setGuideTarget] = useState<string | null>(null);
   const [guideActive, setGuideActive] = useState(false);
 
-  useEffect(() => {
-    // Improved mobile detection: checks for touch support and viewport size
-    const checkMobile = () => {
-      const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-      const isSmallScreen = window.innerWidth <= 900;
-      const isMobileUA =
-        /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(
-          navigator.userAgent
-        );
-      setIsMobile(isTouch || isSmallScreen || isMobileUA);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+useEffect(() => {
+  const checkMobile = () => {
+    const isMobileUA = /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(
+      navigator.userAgent
+    );
+    setIsMobile(isMobileUA);
+  };
+
+  checkMobile();
+  // User agent doesn't change with resize, so no need for resize listener
+}, []);
 
   useEffect(() => {
     // Check for ?view= param in URL
